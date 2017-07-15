@@ -30,6 +30,8 @@
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lSNR = new System.Windows.Forms.Label();
+            this.lProgress = new System.Windows.Forms.Label();
             this.bCpyImg = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.lTimeElapsed = new System.Windows.Forms.Label();
@@ -60,6 +62,8 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.lSNR);
+            this.panel1.Controls.Add(this.lProgress);
             this.panel1.Controls.Add(this.bCpyImg);
             this.panel1.Controls.Add(this.progressBar1);
             this.panel1.Controls.Add(this.lTimeElapsed);
@@ -71,6 +75,25 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(287, 261);
             this.panel1.TabIndex = 0;
+            // 
+            // lSNR
+            // 
+            this.lSNR.AutoSize = true;
+            this.lSNR.Location = new System.Drawing.Point(9, 67);
+            this.lSNR.Name = "lSNR";
+            this.lSNR.Size = new System.Drawing.Size(36, 13);
+            this.lSNR.TabIndex = 8;
+            this.lSNR.Text = "SNR: ";
+            // 
+            // lProgress
+            // 
+            this.lProgress.AutoSize = true;
+            this.lProgress.BackColor = System.Drawing.Color.Transparent;
+            this.lProgress.Location = new System.Drawing.Point(9, 89);
+            this.lProgress.Name = "lProgress";
+            this.lProgress.Size = new System.Drawing.Size(21, 13);
+            this.lProgress.TabIndex = 7;
+            this.lProgress.Text = "0%";
             // 
             // bCpyImg
             // 
@@ -161,6 +184,8 @@
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button bCpyImg;
+        private System.Windows.Forms.Label lProgress;
+        private System.Windows.Forms.Label lSNR;
     }
 }
 
