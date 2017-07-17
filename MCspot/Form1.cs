@@ -14,10 +14,10 @@ namespace MCspot
     public partial class Form1 : Form
     {
         static int NUM_THREADS = 7; 
-        static int PHOTONS_PER_LED = 1500 / (NUM_THREADS);
-        static int SECONDARY_EMISSION_PHOTONS = 4000;
+        static int PHOTONS_PER_LED = 2*2100 / (NUM_THREADS);
+        static int SECONDARY_EMISSION_PHOTONS = 2000;
         static int NUM_PIXELS_SIDE =10;
-        static int STEPPERCENT = 2;
+        static int STEPPERCENT = 1;
         static int REFRESH_STEP = 0;
         int refrcnt = 0;
 
@@ -356,27 +356,22 @@ namespace MCspot
                 if (iPhoton % REFRESH_STEP == 0)
                 {
                     refrcnt++;
-                    progressBar1.Invoke(new Action(delegate ()
-                    {
-                        double temppr = (double)(1.0/NUM_THREADS)* refrcnt * STEPPERCENT;
-                        temppr = temppr>100.0 ? 100.0 : temppr;
-                        lProgress.Text = String.Format("Progress: {0:0}%", temppr);
-                        progressBar1.Value = (int)temppr;
-                    }));
 
-                    lock (GLOBAL_RANDOM_VAR)
+                    updateHitMesh(pixelHITtemp);
+
+                    if (refrcnt % NUM_THREADS == 0)
                     {
-                        for (int rowIterator = 0; rowIterator < NUM_PIXELS_SIDE; rowIterator++)
+                        progressBar1.Invoke(new Action(delegate ()
                         {
-                            for (int colIterator = 0; colIterator < NUM_PIXELS_SIDE; colIterator++)
-                            {
-                                pixelHIT[rowIterator, colIterator] += pixelHITtemp[rowIterator, colIterator];
-                                siatkaHIT[rowIterator, colIterator] = siatkaHITTemp[rowIterator, colIterator];
-                            }
+                            double temppr = (double)(1.0 / NUM_THREADS) * refrcnt * STEPPERCENT;
+                            temppr = temppr > 100.0 ? 100.0 : temppr;
+                            lProgress.Text = String.Format("Progress: {0:0}%", temppr);
+                            progressBar1.Value = (int)temppr;
+                        }));
+
+                        lock (GLOBAL_RANDOM_VAR) { 
+                            previewImage = CreateImage(pixelHIT);
                         }
-
-                        previewImage = CreateImage(pixelHIT);
-
                         //automatically copy the resulting Image to clipboard after the simulation is performed
                         pictureBox1.BeginInvoke(new Action(delegate ()
                         {
@@ -388,30 +383,22 @@ namespace MCspot
                 }
             }
 
-            lock (GLOBAL_RANDOM_VAR)
-            {
-                for(int rowIterator = 0; rowIterator < NUM_PIXELS_SIDE; rowIterator++)
-                {
-                    for(int colIterator = 0; colIterator < NUM_PIXELS_SIDE; colIterator++)
-                    {
-                        pixelHIT[rowIterator, colIterator] += pixelHITtemp[rowIterator, colIterator];
-                        siatkaHIT[rowIterator, colIterator] = siatkaHITTemp[rowIterator, colIterator];                        
-                    }
-                }
-
-                previewImage = CreateImage(pixelHIT);
-                
-                //automatically copy the resulting Image to clipboard after the simulation is performed
-                pictureBox1.BeginInvoke(new Action(delegate ()
-                {
-                    pictureBox1.Image = previewImage;
-                    pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-                    Clipboard.SetImage(previewImage);
-                }));
-            }
-
+            updateHitMesh(pixelHITtemp);        
         }
 
+        public void updateHitMesh(double[,] pixelHITtemp)
+        {
+            lock (GLOBAL_RANDOM_VAR)
+            {
+                for (int rowIterator = 0; rowIterator < NUM_PIXELS_SIDE; rowIterator++)
+                {
+                    for (int colIterator = 0; colIterator < NUM_PIXELS_SIDE; colIterator++)
+                    {
+                        pixelHIT[rowIterator, colIterator] += pixelHITtemp[rowIterator, colIterator];
+                    }
+                }                
+            }            
+        }
 
         T Cast<T>(object obj, T type)
         {
@@ -428,17 +415,7 @@ namespace MCspot
             byte v;
 
             System.Buffer.BlockCopy(hitMatrix, 0, tm, 0, 100 * 100);
-
-            double average = tm.Average();
-            double sumOfSquaresOfDifferences = tm.Select(val => (val - average) * (val - average)).Sum();
-            double sd = Math.Sqrt(sumOfSquaresOfDifferences / tm.Length);
-
-            double snr = 20 * Math.Log10((max - min) / sd);
-
-            lSNR.Invoke(new Action(delegate ()
-            {
-                lSNR.Text = String.Format("SNR: {0:0.00} dB", snr);
-            }));
+            displaySNR(Elementary.CalculateSNR(min, max, tm));            
 
             Bitmap     bitmap = new Bitmap(hitMatrix.GetLength(0), hitMatrix.GetLength(1));
             BitmapData bidmapdata = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
@@ -465,8 +442,15 @@ namespace MCspot
             bitmap.UnlockBits(bidmapdata);
             return bitmap;
 
-        }
+        }    
      
+        public void displaySNR(double snr)
+        {
+            lSNR.Invoke(new Action(delegate ()
+            {
+                lSNR.Text = String.Format("SNR: {0:0.00} dB", snr);
+            }));
+        }
     }
 
 }
