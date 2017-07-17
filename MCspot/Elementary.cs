@@ -178,6 +178,15 @@ namespace MCspot
 
             return pointRotated;
         }
+
+        public static double CalculateSNR(double min, double max, double[] tm)
+        {
+            double average = tm.Average();
+            double sumOfSquaresOfDifferences = tm.Select(val => (val - average) * (val - average)).Sum();
+            double sd = Math.Sqrt(sumOfSquaresOfDifferences / tm.Length);
+
+            return 20 * Math.Log10((max - min) / sd);                     
+        }
     }
 
 }
