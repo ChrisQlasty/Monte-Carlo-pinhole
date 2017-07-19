@@ -187,6 +187,25 @@ namespace MCspot
 
             return 20 * Math.Log10((max - min) / sd);                     
         }
+
+        public static double CalculateError(int NUM_PIXELS_SIDE)
+        {
+            double maxOrg = Form1._1Dimage.Max();
+            double[] norm_1Dimage = Form1._1Dimage.Select(item => item / maxOrg).ToArray();
+
+            double errorSum = 0.0;
+
+            for (int itemIterator = 0; itemIterator < NUM_PIXELS_SIDE*NUM_PIXELS_SIDE; itemIterator++)
+            {
+                errorSum += Math.Abs(norm_1Dimage[itemIterator] - Form1._1Dprevimage[itemIterator]);
+            }       
+
+
+            // At the 1st time the method is called no normalization is required, hence for next calculations we can pass the normalized one
+            Array.Copy(norm_1Dimage, Form1._1Dprevimage, NUM_PIXELS_SIDE * NUM_PIXELS_SIDE);
+
+            return errorSum;
+        }
     }
 
 }

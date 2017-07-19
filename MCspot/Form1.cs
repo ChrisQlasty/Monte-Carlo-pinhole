@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Imaging;
+using System.Collections.Generic;
 
 namespace MCspot
 {
@@ -17,19 +18,22 @@ namespace MCspot
         static int PHOTONS_PER_LED = 2*2100 / (NUM_THREADS);
         static int SECONDARY_EMISSION_PHOTONS = 2000;
         static int NUM_PIXELS_SIDE =10;
-        static int STEPPERCENT = 1;
+        static int STEPPERCENT = 2;
         static int REFRESH_STEP = 0;
         int refrcnt = 0;
 
         private static Random GLOBAL_RANDOM_VAR = new Random();
 
+        private Queue<double> SNRqueue = new Queue<double>();
 
         double[,] pixelHIT, siatkaHIT;
         double[] angleEff = new double[] { 0, 0, 0, 0 };
 
+        public static double[] _1Dimage, _1Dprevimage;
+
         double L1, L2;
         double sideLength = 1;
-        double resolution = 0.01;        
+        double resolution = 0.02;        
 
         Image previewImage = null;
 
@@ -59,6 +63,7 @@ namespace MCspot
             NUM_PIXELS_SIDE = Convert.ToInt16(sideLength / resolution);            
             pixelHIT = new double[NUM_PIXELS_SIDE,NUM_PIXELS_SIDE];
             siatkaHIT = new double[NUM_PIXELS_SIDE, NUM_PIXELS_SIDE];
+            _1Dprevimage = new double[NUM_PIXELS_SIDE * NUM_PIXELS_SIDE];
 
             //create ball
             CartesianCoordinates ballCoordinates = new CartesianCoordinates(x: 0, y: 0, z: 3);                      
@@ -405,17 +410,18 @@ namespace MCspot
             return (T)obj;
         }
 
-
-        double[] tm = new double[100 * 100];
+        
         private Image CreateImage(double[,] hitMatrix)
-        {            
+        {
+            _1Dimage = new double[NUM_PIXELS_SIDE * NUM_PIXELS_SIDE];
             double min = hitMatrix.Cast<double>().Min();
             double max = hitMatrix.Cast<double>().Max();
             double range = max - min;
             byte v;
 
-            System.Buffer.BlockCopy(hitMatrix, 0, tm, 0, 100 * 100);
-            displaySNR(Elementary.CalculateSNR(min, max, tm));            
+            System.Buffer.BlockCopy(hitMatrix, 0, _1Dimage, 0, 100 * 100);
+            DisplaySNR(Elementary.CalculateSNR(min, max, _1Dimage));
+            DisplayERROR(Elementary.CalculateError(NUM_PIXELS_SIDE));
 
             Bitmap     bitmap = new Bitmap(hitMatrix.GetLength(0), hitMatrix.GetLength(1));
             BitmapData bidmapdata = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
@@ -441,14 +447,27 @@ namespace MCspot
 
             bitmap.UnlockBits(bidmapdata);
             return bitmap;
-
         }    
      
-        public void displaySNR(double snr)
+        public void DisplaySNR(double snr)
         {
+            SNRqueue.Enqueue(snr);
             lSNR.Invoke(new Action(delegate ()
             {
                 lSNR.Text = String.Format("SNR: {0:0.00} dB", snr);
+
+                chart1.Series[0].Points.DataBindY(SNRqueue);
+            }));
+        }
+
+        public void DisplayERROR(double error)
+        {
+            //ERRORqueue.Enqueue(error);
+            lERROR.Invoke(new Action(delegate ()
+            {
+                lERROR.Text = String.Format("Error: {0:0.00}", error);
+
+                //chart2.Series[0].Points.DataBindY(ERRORqueue);
             }));
         }
     }
