@@ -28,12 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title2 = new System.Windows.Forms.DataVisualization.Charting.Title();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lERROR = new System.Windows.Forms.Label();
             this.lSNR = new System.Windows.Forms.Label();
             this.lProgress = new System.Windows.Forms.Label();
             this.bCpyImg = new System.Windows.Forms.Button();
@@ -43,12 +48,13 @@
             this.tbFileName = new System.Windows.Forms.TextBox();
             this.bStart = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.lERROR = new System.Windows.Forms.Label();
+            this.chartSNR = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.chartError = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartSNR)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartError)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -56,9 +62,10 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.chartError, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.pictureBox1, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.chart1, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.chartSNR, 1, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -84,6 +91,15 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(287, 261);
             this.panel1.TabIndex = 0;
+            // 
+            // lERROR
+            // 
+            this.lERROR.AutoSize = true;
+            this.lERROR.Location = new System.Drawing.Point(10, 90);
+            this.lERROR.Name = "lERROR";
+            this.lERROR.Size = new System.Drawing.Size(32, 13);
+            this.lERROR.TabIndex = 9;
+            this.lERROR.Text = "Error:";
             // 
             // lSNR
             // 
@@ -166,35 +182,48 @@
             this.pictureBox1.TabIndex = 3;
             this.pictureBox1.TabStop = false;
             // 
-            // chart1
+            // chartSNR
             // 
+            chartArea2.Name = "ChartArea1";
+            this.chartSNR.ChartAreas.Add(chartArea2);
+            legend2.Enabled = false;
+            legend2.Name = "Legend1";
+            this.chartSNR.Legends.Add(legend2);
+            this.chartSNR.Location = new System.Drawing.Point(296, 270);
+            this.chartSNR.Name = "chartSNR";
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.chartSNR.Series.Add(series2);
+            this.chartSNR.Size = new System.Drawing.Size(287, 262);
+            this.chartSNR.TabIndex = 4;
+            this.chartSNR.Text = "chart1";
+            title2.Name = "Title1";
+            title2.Text = "SNR plot";
+            this.chartSNR.Titles.Add(title2);
+            // 
+            // chartError
+            // 
+            chartArea1.AxisY.IsLogarithmic = true;
             chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
+            this.chartError.ChartAreas.Add(chartArea1);
             legend1.Enabled = false;
             legend1.Name = "Legend1";
-            this.chart1.Legends.Add(legend1);
-            this.chart1.Location = new System.Drawing.Point(296, 270);
-            this.chart1.Name = "chart1";
+            this.chartError.Legends.Add(legend1);
+            this.chartError.Location = new System.Drawing.Point(3, 270);
+            this.chartError.Name = "chartError";
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             series1.Legend = "Legend1";
             series1.Name = "Series1";
-            this.chart1.Series.Add(series1);
-            this.chart1.Size = new System.Drawing.Size(287, 262);
-            this.chart1.TabIndex = 4;
-            this.chart1.Text = "chart1";
+            this.chartError.Series.Add(series1);
+            this.chartError.Size = new System.Drawing.Size(287, 262);
+            this.chartError.TabIndex = 5;
+            this.chartError.Text = "chart2";
             title1.Name = "Title1";
-            title1.Text = "SNR plot";
-            this.chart1.Titles.Add(title1);
-            // 
-            // lERROR
-            // 
-            this.lERROR.AutoSize = true;
-            this.lERROR.Location = new System.Drawing.Point(10, 90);
-            this.lERROR.Name = "lERROR";
-            this.lERROR.Size = new System.Drawing.Size(32, 13);
-            this.lERROR.TabIndex = 9;
-            this.lERROR.Text = "Error:";
+            title1.Text = "Error plot";
+            this.chartError.Titles.Add(title1);
             // 
             // Form1
             // 
@@ -208,7 +237,8 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartSNR)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartError)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -226,8 +256,9 @@
         private System.Windows.Forms.Button bCpyImg;
         private System.Windows.Forms.Label lProgress;
         private System.Windows.Forms.Label lSNR;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartSNR;
         private System.Windows.Forms.Label lERROR;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartError;
     }
 }
 

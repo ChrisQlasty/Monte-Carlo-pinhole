@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 namespace MCspot
 {
     public static class Elementary
-    {                            
+    {
+        const double EPSILON = 0.00001;
+                  
         static public SphericalCoordinates Kart2Sphere(CartesianCoordinates kart)
         {
             double r = Math.Sqrt(kart.x * kart.x + kart.y * kart.y + kart.z * kart.z);
@@ -203,6 +205,8 @@ namespace MCspot
 
             // At the 1st time the method is called no normalization is required, hence for next calculations we can pass the normalized one
             Array.Copy(norm_1Dimage, Form1._1Dprevimage, NUM_PIXELS_SIDE * NUM_PIXELS_SIDE);
+
+            errorSum = errorSum <= 0 ? EPSILON : errorSum;
 
             return errorSum;
         }
