@@ -15,7 +15,7 @@ namespace MCspot
     public partial class Form1 : Form
     {
         static int NUM_THREADS = 7; 
-        static int PHOTONS_PER_LED = 2100 / (NUM_THREADS);
+        static int PHOTONS_PER_LED = 2*2100 / (NUM_THREADS);
         static int SECONDARY_EMISSION_PHOTONS = 2000;
         static int NUM_PIXELS_SIDE =10;
         static int STEPPERCENT = 1;
@@ -35,7 +35,7 @@ namespace MCspot
 
         double L1, L2;
         double sideLength = 1;
-        double resolution = 0.1;        
+        double resolution = 0.01;        
 
         Image previewImage = null;
 
@@ -200,7 +200,31 @@ namespace MCspot
             }
         }
 
-        
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox1_Enter_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void tbFileName_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
         public void GreatLoop(object param)
         {     
             var _SimulationParameters = Cast(param, new { Ax = 0.0, Ay = 0.0, Az = 0.0, Ar=0.0});
