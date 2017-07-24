@@ -10,7 +10,7 @@ namespace MCspot
     {
         const double EPSILON = 0.00001;
                   
-        static public SphericalCoordinates Kart2Sphere(CartesianCoordinates kart)
+        static public SphericalCoordinates Cart2Sphere(CartesianCoordinates kart)
         {
             double r = Math.Sqrt(kart.x * kart.x + kart.y * kart.y + kart.z * kart.z);
             double tetha = (Math.Acos(kart.z / r) * 180 / Math.PI);

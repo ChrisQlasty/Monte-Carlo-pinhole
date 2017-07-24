@@ -68,45 +68,55 @@ namespace MCspot
 
             //create ball
             CartesianCoordinates ballCoordinates = new CartesianCoordinates(x: 0, y: 0, z: 3);                      
-            ballStruct = new GeometricalObject(ballCoordinates, Elementary.Kart2Sphere(ballCoordinates), radius: 1, side:0);
+            ballStruct = new GeometricalObject(ballCoordinates, Elementary.Cart2Sphere(ballCoordinates), radius: 1, side:0);
             
             //create pinhole            
             CartesianCoordinates pinholeCoordinates = new CartesianCoordinates(x: 0, y: 0, z: 0);            
-            pinholeStuct = new GeometricalObject(pinholeCoordinates, Elementary.Kart2Sphere(pinholeCoordinates), radius: 0.5, side: 0);
+            pinholeStuct = new GeometricalObject(pinholeCoordinates, Elementary.Cart2Sphere(pinholeCoordinates), radius: 0.5, side: 0);
 
             //create LEDs
-            int numLEDS = Convert.ToInt16(nudDCnl.Value);
-            double r_dist = Convert.ToDouble(nudPCr.Value) * 0.1;
-            LEDStruct = new GeometricalObject[numLEDS];
-            /*
-            LEDStruct[0] = new GeoObject(new double[] { -1.5, 0, 0 }, Elementary.Kart2Sphere(new double[] { -1.5, 0, 0 }), 0, 0);
-            LEDStruct[1] = new GeoObject(new double[] { -0.5, 0, 0 }, Elementary.Kart2Sphere(new double[] { -0.5, 0, 0 }), 0, 0);
-            LEDStruct[2] = new GeoObject(new double[] { 0.5, 0, 0 }, Elementary.Kart2Sphere(new double[] { 0.5, 0, 0 }), 0, 0);
-            LEDStruct[3] = new GeoObject(new double[] { 1.5, 0, 0 }, Elementary.Kart2Sphere(new double[] { 1.5, 0, 0 }), 0, 0);
-            */
-           
-           /* 
-            LEDStruct[4] = new GeoObject(new double[] {-1.5, 2, 0 }, Elementary.Kart2Sphere(new double[] {-1.5, 2, 0 }), 0, 0);
-            LEDStruct[5] = new GeoObject(new double[] {-0.5, 2, 0 }, Elementary.Kart2Sphere(new double[] { -0.5, 2, 0 }), 0, 0);
-            LEDStruct[6] = new GeoObject(new double[] { 0.5, 2, 0 }, Elementary.Kart2Sphere(new double[] {  0.5, 2, 0 }), 0, 0);
-            LEDStruct[7] = new GeoObject(new double[] { 1.5, 2, 0 }, Elementary.Kart2Sphere(new double[] {  1.5, 2, 0 }), 0, 0);
+            if (rbCircle.Checked)
+            {
+                int numLEDS = Convert.ToInt16(nudPCnl.Value);
+                double r_dist = Convert.ToDouble(nudPCr.Value) * 0.1;
+                LEDStruct = new GeometricalObject[numLEDS];
 
-            */
-     
-            
-            for (int ledsIterator = 0; ledsIterator < numLEDS; ledsIterator++)
-            {                
-                SphericalCoordinates sphericalTemp = new SphericalCoordinates(r: r_dist, tetha: 90.0, phi: 360 * ledsIterator / numLEDS);
-                LEDStruct[ledsIterator] = new GeometricalObject(Elementary.Sphere2Kart(sphericalTemp), sphericalTemp, 0, 0);
+                for (int ledsIterator = 0; ledsIterator < numLEDS; ledsIterator++)
+                {
+                    SphericalCoordinates sphericalTemp = new SphericalCoordinates(r: r_dist, tetha: 90.0, phi: 360 * ledsIterator / numLEDS);
+                    LEDStruct[ledsIterator] = new GeometricalObject(Elementary.Sphere2Kart(sphericalTemp), sphericalTemp, 0, 0);
+                }
             }
-            
+
+            else if (rbGrid.Checked)
+            {
+                int cols = Convert.ToInt16(nudPGc.Value);
+                int rows = Convert.ToInt16(nudPGr.Value);
+                double spacing = Convert.ToInt16(nudPGs.Value)*0.1;
+                int numLEDS = cols * rows;
+                LEDStruct = new GeometricalObject[numLEDS];
+
+                int helpIter = 0;
+                for (int colit = 0; colit < cols; colit++)
+                {
+                    for (int rowit = 0; rowit < rows; rowit++)
+                    {
+                        CartesianCoordinates tempC = new CartesianCoordinates(x: spacing * ((cols + 1) / 2.0 - colit) - spacing, 
+                                                                              y: spacing * ((rows + 1) / 2.0 - rowit) - spacing,
+                                                                              z: 0.0);
+                        LEDStruct[helpIter++] = new GeometricalObject(tempC, Elementary.Cart2Sphere(tempC), radius: 0.0, side: 0.0);
+                    }
+                }     
+            }
+                         
+
             //create ball helper            
             CartesianCoordinates ballCh = new CartesianCoordinates(x: 0, y: 0, z: 0);            
-            ballStructh = new GeometricalObject(ballCh, Elementary.Kart2Sphere(ballCh), radius: pinholeStuct.radius, side: 0);
+            ballStructh = new GeometricalObject(ballCh, Elementary.Cart2Sphere(ballCh), radius: pinholeStuct.radius, side: 0);
             
             //create quad photodiode            
             CartesianCoordinates qpC = new CartesianCoordinates(x: 0, y: 0, z: -1);
-            QPStruct = new GeometricalObject(qpC, Elementary.Kart2Sphere(qpC), 0, 0.127);
+            QPStruct = new GeometricalObject(qpC, Elementary.Cart2Sphere(qpC), 0, 0.127);
             
             REFRESH_STEP = STEPPERCENT* PHOTONS_PER_LED /100;
         }
@@ -132,8 +142,8 @@ namespace MCspot
 
             int xstart = 0;
             int xfinni = 0;
-            int ystart = 1;
-            int yfinni = 1;
+            int ystart = 0;
+            int yfinni = 0;
             int zstart = 3;
             int zfinni = 3; 
 
@@ -258,7 +268,7 @@ namespace MCspot
             double rcObst = _SimulationParameters.Ar;
 
             CartesianCoordinates ballC = new CartesianCoordinates(x: xcObst, y: ycObst, z: zcObst);            
-            ballStruct = new GeometricalObject(cartPoint: ballC, spherPoint: Elementary.Kart2Sphere(ballC), radius: rcObst, side: 0);
+            ballStruct = new GeometricalObject(cartPoint: ballC, spherPoint: Elementary.Cart2Sphere(ballC), radius: rcObst, side: 0);
 
             Random localRandom = new Random(Form1.GLOBAL_RANDOM_VAR.Next() & DateTime.Now.Millisecond);
 
@@ -307,7 +317,7 @@ namespace MCspot
                     CartesianCoordinates photonEndPoint = Elementary.Sphere2Kart(new SphericalCoordinates(r: _r, tetha:_tetha, phi:_phi ));
 
                     newOriginCart = new CartesianCoordinates(x: ballStruct.x - tempLED.x, y: ballStruct.y - tempLED.y, z: ballStruct.z - tempLED.z);
-                    newOriginSpher = Elementary.Kart2Sphere(newOriginCart);
+                    newOriginSpher = Elementary.Cart2Sphere(newOriginCart);
 
                     photonEndPoint = Elementary.PointRotation(photonEndPoint, newOriginSpher);
 
@@ -337,7 +347,7 @@ namespace MCspot
                             CartesianCoordinates photonEndPointFinal = Elementary.Sphere2Kart(new SphericalCoordinates(r: _r, tetha: _tetha, phi: _phi));
 
                             newOriginCart = new CartesianCoordinates(x: BallHitPoint.x, y: BallHitPoint.y, z: BallHitPoint.z);
-                            newOriginSpher = Elementary.Kart2Sphere(newOriginCart);
+                            newOriginSpher = Elementary.Cart2Sphere(newOriginCart);
 
                             double[] wek = new double[] { 0, 0 };                           
 
@@ -377,7 +387,7 @@ namespace MCspot
 
                                 L2 = Elementary.DistanceFind(new CartesianCoordinates(x: BallHitPoint.x, y: BallHitPoint.y, z: BallHitPoint.z), new CartesianCoordinates(x: x, y: y, z: z));
 
-                                SphericalCoordinates hitParams = Elementary.Kart2Sphere(new CartesianCoordinates(x: x1 - x, y: y1 - y, z: z1 - z));
+                                SphericalCoordinates hitParams = Elementary.Cart2Sphere(new CartesianCoordinates(x: x1 - x, y: y1 - y, z: z1 - z));
                                 angleEff[3] = Math.Cos(hitParams.tetha * Math.PI / 180);
                           
                                 double I0 = 1;
