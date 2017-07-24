@@ -39,6 +39,11 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.chartError = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.gbLEDs = new System.Windows.Forms.GroupBox();
+            this.rbGrid = new System.Windows.Forms.RadioButton();
+            this.panelGrid = new System.Windows.Forms.Panel();
+            this.rbCircle = new System.Windows.Forms.RadioButton();
+            this.panelCirc = new System.Windows.Forms.Panel();
             this.lERROR = new System.Windows.Forms.Label();
             this.lSNR = new System.Windows.Forms.Label();
             this.lProgress = new System.Windows.Forms.Label();
@@ -48,21 +53,23 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tbFileName = new System.Windows.Forms.TextBox();
             this.bStart = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.chartSNR = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.rbCircle = new System.Windows.Forms.RadioButton();
-            this.gbLEDs = new System.Windows.Forms.GroupBox();
-            this.rbGrid = new System.Windows.Forms.RadioButton();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.nudDCnl = new System.Windows.Forms.NumericUpDown();
+            this.nudPCr = new System.Windows.Forms.NumericUpDown();
+            this.label33 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartError)).BeginInit();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.gbLEDs.SuspendLayout();
+            this.panelCirc.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartSNR)).BeginInit();
             this.panel4.SuspendLayout();
-            this.gbLEDs.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudDCnl)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudPCr)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -124,6 +131,64 @@
             this.panel1.Size = new System.Drawing.Size(387, 280);
             this.panel1.TabIndex = 0;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            // 
+            // gbLEDs
+            // 
+            this.gbLEDs.Controls.Add(this.rbGrid);
+            this.gbLEDs.Controls.Add(this.panelGrid);
+            this.gbLEDs.Controls.Add(this.rbCircle);
+            this.gbLEDs.Controls.Add(this.panelCirc);
+            this.gbLEDs.Location = new System.Drawing.Point(90, 45);
+            this.gbLEDs.Name = "gbLEDs";
+            this.gbLEDs.Size = new System.Drawing.Size(256, 129);
+            this.gbLEDs.TabIndex = 13;
+            this.gbLEDs.TabStop = false;
+            this.gbLEDs.Text = "LEDs configuration";
+            this.gbLEDs.Enter += new System.EventHandler(this.groupBox1_Enter_1);
+            // 
+            // rbGrid
+            // 
+            this.rbGrid.AutoSize = true;
+            this.rbGrid.Location = new System.Drawing.Point(131, 20);
+            this.rbGrid.Name = "rbGrid";
+            this.rbGrid.Size = new System.Drawing.Size(42, 17);
+            this.rbGrid.TabIndex = 13;
+            this.rbGrid.TabStop = true;
+            this.rbGrid.Text = "grid";
+            this.rbGrid.UseVisualStyleBackColor = true;
+            this.rbGrid.CheckedChanged += new System.EventHandler(this.rbGrid_CheckedChanged);
+            // 
+            // panelGrid
+            // 
+            this.panelGrid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelGrid.Location = new System.Drawing.Point(131, 42);
+            this.panelGrid.Name = "panelGrid";
+            this.panelGrid.Size = new System.Drawing.Size(125, 87);
+            this.panelGrid.TabIndex = 11;
+            // 
+            // rbCircle
+            // 
+            this.rbCircle.AutoSize = true;
+            this.rbCircle.Location = new System.Drawing.Point(0, 18);
+            this.rbCircle.Name = "rbCircle";
+            this.rbCircle.Size = new System.Drawing.Size(59, 17);
+            this.rbCircle.TabIndex = 12;
+            this.rbCircle.TabStop = true;
+            this.rbCircle.Text = "circular";
+            this.rbCircle.UseVisualStyleBackColor = true;
+            this.rbCircle.CheckedChanged += new System.EventHandler(this.rbCircle_CheckedChanged);
+            // 
+            // panelCirc
+            // 
+            this.panelCirc.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelCirc.Controls.Add(this.label2);
+            this.panelCirc.Controls.Add(this.label33);
+            this.panelCirc.Controls.Add(this.nudPCr);
+            this.panelCirc.Controls.Add(this.nudDCnl);
+            this.panelCirc.Location = new System.Drawing.Point(0, 42);
+            this.panelCirc.Name = "panelCirc";
+            this.panelCirc.Size = new System.Drawing.Size(125, 87);
+            this.panelCirc.TabIndex = 10;
             // 
             // lERROR
             // 
@@ -208,15 +273,6 @@
             this.bStart.UseVisualStyleBackColor = true;
             this.bStart.Click += new System.EventHandler(this.bStart_Click);
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox1.Location = new System.Drawing.Point(108, 58);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(166, 167);
-            this.pictureBox1.TabIndex = 3;
-            this.pictureBox1.TabStop = false;
-            // 
             // chartSNR
             // 
             chartArea2.Name = "ChartArea1";
@@ -239,22 +295,6 @@
             title2.Text = "SNR plot";
             this.chartSNR.Titles.Add(title2);
             // 
-            // panel2
-            // 
-            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel2.Location = new System.Drawing.Point(0, 42);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(125, 87);
-            this.panel2.TabIndex = 10;
-            // 
-            // panel3
-            // 
-            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel3.Location = new System.Drawing.Point(131, 42);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(125, 87);
-            this.panel3.TabIndex = 11;
-            // 
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.Color.Black;
@@ -265,41 +305,78 @@
             this.panel4.Size = new System.Drawing.Size(387, 280);
             this.panel4.TabIndex = 6;
             // 
-            // rbCircle
+            // pictureBox1
             // 
-            this.rbCircle.AutoSize = true;
-            this.rbCircle.Location = new System.Drawing.Point(0, 18);
-            this.rbCircle.Name = "rbCircle";
-            this.rbCircle.Size = new System.Drawing.Size(59, 17);
-            this.rbCircle.TabIndex = 12;
-            this.rbCircle.TabStop = true;
-            this.rbCircle.Text = "circular";
-            this.rbCircle.UseVisualStyleBackColor = true;
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox1.Location = new System.Drawing.Point(108, 58);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(166, 167);
+            this.pictureBox1.TabIndex = 3;
+            this.pictureBox1.TabStop = false;
             // 
-            // gbLEDs
+            // nudDCnl
             // 
-            this.gbLEDs.Controls.Add(this.rbGrid);
-            this.gbLEDs.Controls.Add(this.panel3);
-            this.gbLEDs.Controls.Add(this.rbCircle);
-            this.gbLEDs.Controls.Add(this.panel2);
-            this.gbLEDs.Location = new System.Drawing.Point(90, 45);
-            this.gbLEDs.Name = "gbLEDs";
-            this.gbLEDs.Size = new System.Drawing.Size(256, 129);
-            this.gbLEDs.TabIndex = 13;
-            this.gbLEDs.TabStop = false;
-            this.gbLEDs.Text = "LEDs configuration";
-            this.gbLEDs.Enter += new System.EventHandler(this.groupBox1_Enter_1);
+            this.nudDCnl.Location = new System.Drawing.Point(6, 4);
+            this.nudDCnl.Maximum = new decimal(new int[] {
+            360,
+            0,
+            0,
+            0});
+            this.nudDCnl.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudDCnl.Name = "nudDCnl";
+            this.nudDCnl.Size = new System.Drawing.Size(40, 20);
+            this.nudDCnl.TabIndex = 0;
+            this.nudDCnl.Value = new decimal(new int[] {
+            4,
+            0,
+            0,
+            0});
             // 
-            // rbGrid
+            // nudPCr
             // 
-            this.rbGrid.AutoSize = true;
-            this.rbGrid.Location = new System.Drawing.Point(131, 20);
-            this.rbGrid.Name = "rbGrid";
-            this.rbGrid.Size = new System.Drawing.Size(42, 17);
-            this.rbGrid.TabIndex = 13;
-            this.rbGrid.TabStop = true;
-            this.rbGrid.Text = "grid";
-            this.rbGrid.UseVisualStyleBackColor = true;
+            this.nudPCr.Location = new System.Drawing.Point(6, 31);
+            this.nudPCr.Maximum = new decimal(new int[] {
+            200,
+            0,
+            0,
+            0});
+            this.nudPCr.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudPCr.Name = "nudPCr";
+            this.nudPCr.Size = new System.Drawing.Size(40, 20);
+            this.nudPCr.TabIndex = 1;
+            this.nudPCr.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.nudPCr.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(52, 6);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(42, 13);
+            this.label33.TabIndex = 2;
+            this.label33.Text = "n LEDs";
+            this.label33.Click += new System.EventHandler(this.plab1_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(52, 33);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(40, 13);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "R [mm]";
             // 
             // Form1
             // 
@@ -313,11 +390,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.chartError)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chartSNR)).EndInit();
-            this.panel4.ResumeLayout(false);
             this.gbLEDs.ResumeLayout(false);
             this.gbLEDs.PerformLayout();
+            this.panelCirc.ResumeLayout(false);
+            this.panelCirc.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chartSNR)).EndInit();
+            this.panel4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudDCnl)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudPCr)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -338,12 +419,16 @@
         private System.Windows.Forms.DataVisualization.Charting.Chart chartSNR;
         private System.Windows.Forms.Label lERROR;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartError;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panelGrid;
+        private System.Windows.Forms.Panel panelCirc;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.GroupBox gbLEDs;
         private System.Windows.Forms.RadioButton rbGrid;
         private System.Windows.Forms.RadioButton rbCircle;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.NumericUpDown nudPCr;
+        private System.Windows.Forms.NumericUpDown nudDCnl;
+        private System.Windows.Forms.Label label2;
     }
 }
 

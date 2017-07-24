@@ -47,8 +47,7 @@ namespace MCspot
 
         public Form1()
         {
-            InitializeComponent();
-            InitializeEnvironment();
+            InitializeComponent();            
 
             // other elements
             lProgress.BackColor = System.Drawing.Color.Transparent;           
@@ -76,8 +75,8 @@ namespace MCspot
             pinholeStuct = new GeometricalObject(pinholeCoordinates, Elementary.Kart2Sphere(pinholeCoordinates), radius: 0.5, side: 0);
 
             //create LEDs
-            int numLEDS = 4;
-            double r_dist = 0.5f;
+            int numLEDS = Convert.ToInt16(nudDCnl.Value);
+            double r_dist = Convert.ToDouble(nudPCr.Value) * 0.1;
             LEDStruct = new GeometricalObject[numLEDS];
             /*
             LEDStruct[0] = new GeoObject(new double[] { -1.5, 0, 0 }, Elementary.Kart2Sphere(new double[] { -1.5, 0, 0 }), 0, 0);
@@ -114,6 +113,8 @@ namespace MCspot
 
         private async void bStart_Click(object sender, EventArgs e)
         {
+            InitializeEnvironment();
+
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
@@ -223,6 +224,28 @@ namespace MCspot
         private void tbFileName_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void plab1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void numericUpDown2_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void rbCircle_CheckedChanged(object sender, EventArgs e)
+        {            
+            panelCirc.Enabled = true;
+            panelGrid.Enabled = false;        
+        }
+
+        private void rbGrid_CheckedChanged(object sender, EventArgs e)
+        {
+            panelCirc.Enabled = false;
+            panelGrid.Enabled = true;
         }
 
         public void GreatLoop(object param)
