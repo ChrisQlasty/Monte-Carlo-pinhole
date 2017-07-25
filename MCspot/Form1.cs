@@ -14,11 +14,11 @@ namespace MCspot
 {
     public partial class Form1 : Form
     {
-        static int NUM_THREADS = 7; 
-        static int PHOTONS_PER_LED = 2*2100 / (NUM_THREADS);
-        static int SECONDARY_EMISSION_PHOTONS = 2000;
-        static int NUM_PIXELS_SIDE =10;
-        static int STEPPERCENT = 1;
+        static int NUM_THREADS = 1; 
+        static int PHOTONS_PER_LED = 210*4 / (NUM_THREADS);
+        static int SECONDARY_EMISSION_PHOTONS = 1000;
+        static int NUM_PIXELS_SIDE = 10;
+        static int STEPPERCENT = 10;
         static int REFRESH_STEP = 0;
         int refrcnt = 0;
 
@@ -34,8 +34,8 @@ namespace MCspot
         public static double[] _1Dimage, _1Dprevimage;
 
         double L1, L2;
-        double sideLength = 1;
-        double resolution = 0.01;        
+        double sideLength = 0.26*2;
+        double resolution = 0.13;        
 
         Image previewImage = null;
 
@@ -72,7 +72,7 @@ namespace MCspot
             
             //create pinhole            
             CartesianCoordinates pinholeCoordinates = new CartesianCoordinates(x: 0, y: 0, z: 0);            
-            pinholeStuct = new GeometricalObject(pinholeCoordinates, Elementary.Cart2Sphere(pinholeCoordinates), radius: 0.5, side: 0);
+            pinholeStuct = new GeometricalObject(pinholeCoordinates, Elementary.Cart2Sphere(pinholeCoordinates), radius: 0.05, side: 0);
 
             //create LEDs
             if (rbCircle.Checked)
@@ -115,7 +115,7 @@ namespace MCspot
             ballStructh = new GeometricalObject(ballCh, Elementary.Cart2Sphere(ballCh), radius: pinholeStuct.radius, side: 0);
             
             //create quad photodiode            
-            CartesianCoordinates qpC = new CartesianCoordinates(x: 0, y: 0, z: -1);
+            CartesianCoordinates qpC = new CartesianCoordinates(x: 0, y: 0, z: -0.1);
             QPStruct = new GeometricalObject(qpC, Elementary.Cart2Sphere(qpC), 0, 0.127);
             
             REFRESH_STEP = STEPPERCENT* PHOTONS_PER_LED /100;
@@ -140,14 +140,14 @@ namespace MCspot
             Random r0 = new Random(Form1.GLOBAL_RANDOM_VAR.Next() & DateTime.Now.Millisecond);
 
 
-            int xstart = 0;
-            int xfinni = 0;
+            int xstart = -1;
+            int xfinni = 1;
             int ystart = 0;
             int yfinni = 0;
-            int zstart = 3;
-            int zfinni = 3; 
+            int zstart = 4;
+            int zfinni = 4; 
 
-            double xstep = 1.0;
+            double xstep = 0.25;
             double ystep = 1.0;
             double zstep = 1.0;
 
@@ -158,7 +158,9 @@ namespace MCspot
                     for (int xc = xstart; xc <= xfinni/xstep; xc++)
                     {
                         // update the position of the ball
-                        var _inputParameters = new { Ax = (xstep*xc), Ay = (ystep*yc), Az = (zstep * zc), Ar = ballStruct.radius };                         
+                        var _inputParameters = new { Ax = (xstep*xc), Ay = (ystep*yc), Az = (zstep * zc), Ar = ballStruct.radius };
+
+                        System.Console.WriteLine("x: {0}", (xstep * xc));
 
                         await Task.Run(() =>
                         {
@@ -175,15 +177,28 @@ namespace MCspot
                                 t.Join();
                         });
 
-                        
-                        /*for (int w = 0; w < NUM_PIXELS; w++)
+                        refrcnt = 0;
+
+                        double qpA = pixelHIT[NUM_PIXELS_SIDE / 2-1, NUM_PIXELS_SIDE / 2];
+                        double qpB = pixelHIT[NUM_PIXELS_SIDE / 2,   NUM_PIXELS_SIDE / 2];
+                        double qpC = pixelHIT[NUM_PIXELS_SIDE / 2,   NUM_PIXELS_SIDE / 2-1];
+                        double qpD = pixelHIT[NUM_PIXELS_SIDE / 2-1, NUM_PIXELS_SIDE / 2-1];
+
+                        double tmpX = (qpA + qpD - qpB - qpC) / (qpA + qpB + qpC + qpD);
+                        double tmpY = (qpA + qpB - qpC - qpD) / (qpA + qpB + qpC + qpD);
+
+                        chartLOC.Series[0].Points.AddXY(tmpX, tmpY);
+
+                        for (int w = 0; w < NUM_PIXELS_SIDE; w++)
                         {
-                            for (int k = 0; k < NUM_PIXELS; k++)
+                            for (int k = 0; k < NUM_PIXELS_SIDE; k++)
                             {
                                 double tmp1 = pixelHIT[w, k];
                                 sl.SetCellValue(w + 1, k + 1, tmp1);
                             }
-                        }*/
+                        }
+
+                        Array.Clear(pixelHIT, 0, NUM_PIXELS_SIDE * NUM_PIXELS_SIDE);
 
                         /*
                         progressBar2.Invoke(new Action(delegate ()
@@ -199,7 +214,7 @@ namespace MCspot
 
                     }
 
-                    //sl.SaveAs((tbFileName.Text.Length > 0 ? tbFileName.Text : "test") + ".xlsx");
+                    sl.SaveAs((tbFileName.Text.Length > 0 ? tbFileName.Text : "test") + ".xlsx");
 
                     bStart.Enabled = true;
 
@@ -291,9 +306,7 @@ namespace MCspot
             // angle of the most wide beam to the pinhole
             dynamic BallHitPointT = Elementary.DoesHitBall(new CartesianCoordinates(x:0,y:0,z:0), new CartesianCoordinates(x: ballStruct.x, y: ballStruct.y, z: ballStruct.z ), ballStruct);
             double Lphc = Elementary.DistanceFind(new CartesianCoordinates(x: BallHitPointT.x, y: BallHitPointT.y, z: BallHitPointT.z ), new CartesianCoordinates(x: 0, y: 0, z: 0));
-            double alfaPH = Math.Atan(pinholeStuct.radius / Lphc) * 180.0 / Math.PI;
-
-            int step = 100;
+            double alfaPH = Math.Atan(pinholeStuct.radius / Lphc) * 180.0 / Math.PI;            
 
             for (int iPhoton = 0; iPhoton < PHOTONS_PER_LED; iPhoton++)
             {
@@ -301,12 +314,8 @@ namespace MCspot
                 for (int iled = 0; iled < LEDStruct.Length; iled++)
                 {
                     tempLED = LEDStruct[iled];
-                    posLED = new CartesianCoordinates(x: LEDStruct[iled].x, y: LEDStruct[iled].y, z: LEDStruct[iled].z);
-                    System.Console.WriteLine(iled);
-
+                    posLED = new CartesianCoordinates(x: LEDStruct[iled].x, y: LEDStruct[iled].y, z: LEDStruct[iled].z);                    
                 
-                    //if (iPhoton % step == 0)
-               
 
 
                     double _tetha = localRandom.NextDouble() * alfaSA;
@@ -336,7 +345,14 @@ namespace MCspot
                     
                         alfa_p = Math.Acos((L1 *L1 + ballStruct.radius *ballStruct.radius - Lc *Lc) / (2 * ballStruct.radius * L1)) * 180 / Math.PI;
                         angleEff[1] = Math.Cos((180.0 - alfa_p) * Math.PI / 180.0);
-                        
+
+                        if (Double.IsNaN(angleEff[1]))
+                        {
+                            System.Console.Write("error 1");
+                            angleEff[1] = 1.0;
+                            // BUG : triangle sides a+b<c
+                        }
+
                         for (int ipFot = 0; ipFot < SECONDARY_EMISSION_PHOTONS; ipFot++)
                         {
                             //sampling the end position of new emitting photon
@@ -392,6 +408,12 @@ namespace MCspot
                           
                                 double I0 = 1;
                                 double Ifin = (I0 * angleEff[0] / (L1 * L1)) * angleEff[1] * angleEff[2] * angleEff[3] / (L2 * L2);
+
+                                if (Double.IsNaN(Ifin))
+                                {
+                                    System.Console.Write("error");
+                                    Ifin = 0;
+                                }
 
                                 int posx=0, posy=0;
 
@@ -479,7 +501,7 @@ namespace MCspot
             byte v;
 
             System.Buffer.BlockCopy(hitMatrix, 0, _1Dimage, 0, NUM_PIXELS_SIDE * NUM_PIXELS_SIDE);
-            DisplaySNR(Elementary.CalculateSNR(min, max, _1Dimage));
+            //DisplaySNR(Elementary.CalculateSNR(min, max, _1Dimage));
             DisplayERROR(Elementary.CalculateError(NUM_PIXELS_SIDE));
 
             Bitmap     bitmap = new Bitmap(hitMatrix.GetLength(0), hitMatrix.GetLength(1));
