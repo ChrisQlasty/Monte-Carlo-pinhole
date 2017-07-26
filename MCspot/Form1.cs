@@ -14,9 +14,9 @@ namespace MCspot
 {
     public partial class Form1 : Form
     {
-        static int NUM_THREADS = 1; 
-        static int PHOTONS_PER_LED = 210*4 / (NUM_THREADS);
-        static int SECONDARY_EMISSION_PHOTONS = 1000;
+        static int NUM_THREADS = 7; 
+        static int PHOTONS_PER_LED = 2100*4 / (NUM_THREADS);
+        static int SECONDARY_EMISSION_PHOTONS = 2000;
         static int NUM_PIXELS_SIDE = 10;
         static int STEPPERCENT = 10;
         static int REFRESH_STEP = 0;
@@ -35,7 +35,7 @@ namespace MCspot
 
         double L1, L2;
         double sideLength = 0.26*2;
-        double resolution = 0.13;        
+        double resolution = 0.013;        
 
         Image previewImage = null;
 
@@ -66,13 +66,16 @@ namespace MCspot
             siatkaHIT = new double[NUM_PIXELS_SIDE, NUM_PIXELS_SIDE];
             _1Dprevimage = new double[NUM_PIXELS_SIDE * NUM_PIXELS_SIDE];
 
+
+            double ballRad = Convert.ToDouble(nudPSEbr.Value)*0.1;
             //create ball
             CartesianCoordinates ballCoordinates = new CartesianCoordinates(x: 0, y: 0, z: 3);                      
-            ballStruct = new GeometricalObject(ballCoordinates, Elementary.Cart2Sphere(ballCoordinates), radius: 1, side:0);
-            
+            ballStruct = new GeometricalObject(ballCoordinates, Elementary.Cart2Sphere(ballCoordinates), radius: ballRad, side:0);
+
+            double phRad = Convert.ToDouble(nudPSEphr.Value) * 0.1;
             //create pinhole            
             CartesianCoordinates pinholeCoordinates = new CartesianCoordinates(x: 0, y: 0, z: 0);            
-            pinholeStuct = new GeometricalObject(pinholeCoordinates, Elementary.Cart2Sphere(pinholeCoordinates), radius: 0.05, side: 0);
+            pinholeStuct = new GeometricalObject(pinholeCoordinates, Elementary.Cart2Sphere(pinholeCoordinates), radius: phRad, side: 0);
 
             //create LEDs
             if (rbCircle.Checked)
@@ -113,10 +116,12 @@ namespace MCspot
             //create ball helper            
             CartesianCoordinates ballCh = new CartesianCoordinates(x: 0, y: 0, z: 0);            
             ballStructh = new GeometricalObject(ballCh, Elementary.Cart2Sphere(ballCh), radius: pinholeStuct.radius, side: 0);
-            
+
+            double imagePlaneDist = -Convert.ToDouble(nudPSEip.Value) * 0.1;
+            double quadSide = Convert.ToDouble(nudPSEqps.Value) * 0.1;
             //create quad photodiode            
-            CartesianCoordinates qpC = new CartesianCoordinates(x: 0, y: 0, z: -0.1);
-            QPStruct = new GeometricalObject(qpC, Elementary.Cart2Sphere(qpC), 0, 0.127);
+            CartesianCoordinates qpC = new CartesianCoordinates(x: 0, y: 0, z: imagePlaneDist);
+            QPStruct = new GeometricalObject(qpC, Elementary.Cart2Sphere(qpC), 0, quadSide);
             
             REFRESH_STEP = STEPPERCENT* PHOTONS_PER_LED /100;
         }
@@ -140,27 +145,25 @@ namespace MCspot
             Random r0 = new Random(Form1.GLOBAL_RANDOM_VAR.Next() & DateTime.Now.Millisecond);
 
 
-            int xstart = -1;
-            int xfinni = 1;
-            int ystart = 0;
-            int yfinni = 0;
-            int zstart = 4;
-            int zfinni = 4; 
+            double xstart = 0.5;
+            double xfinni = 0.5;
+            double ystart = 0.15;
+            double yfinni = 0.15;
+            double zstart = 2;
+            double zfinni = 2; 
 
-            double xstep = 0.25;
+            double xstep = 0.1;
             double ystep = 1.0;
             double zstep = 1.0;
 
-            for (int zc = zstart; zc <= zfinni/zstep; zc++)
+            for (int zc = 0; zc <= (zfinni-zstart)/zstep; zc++)
             {
-                for (int yc = ystart; yc <= yfinni/ystep; yc++)
+                for (int yc = 0; yc <= (yfinni-ystart)/ystep; yc++)
                 {
-                    for (int xc = xstart; xc <= xfinni/xstep; xc++)
+                    for (int xc = 0; xc <= (xfinni-xstart)/xstep; xc++)
                     {
                         // update the position of the ball
-                        var _inputParameters = new { Ax = (xstep*xc), Ay = (ystep*yc), Az = (zstep * zc), Ar = ballStruct.radius };
-
-                        System.Console.WriteLine("x: {0}", (xstep * xc));
+                        var _inputParameters = new { Ax = xstart+(xstep*xc), Ay = ystart+(ystep*yc), Az = zstart+(zstep * zc), Ar = ballStruct.radius };                        
 
                         await Task.Run(() =>
                         {
