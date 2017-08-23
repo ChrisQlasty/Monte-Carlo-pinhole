@@ -14,6 +14,7 @@ namespace MCspot
 {
     public partial class Form1 : Form
     {
+        //initial test values
         static int NUM_THREADS = 7; 
         static int PHOTONS_PER_LED = 2100*4 / (NUM_THREADS);
         static int SECONDARY_EMISSION_PHOTONS = 2000;
@@ -50,7 +51,9 @@ namespace MCspot
             InitializeComponent();            
 
             // other elements
-            lProgress.BackColor = System.Drawing.Color.Transparent;           
+            lProgress.BackColor = System.Drawing.Color.Transparent;
+            nudPPTN.Maximum = Environment.ProcessorCount - 1; //limit the number of threads
+            nudPPTN.Value = nudPPTN.Maximum;
         }
       
 
@@ -128,6 +131,7 @@ namespace MCspot
 
         private async void bStart_Click(object sender, EventArgs e)
         {
+            InitializeSimulationProperties();
             InitializeEnvironment();
 
             Stopwatch sw = new Stopwatch();
@@ -229,6 +233,18 @@ namespace MCspot
             }
         }
 
+        private void InitializeSimulationProperties()
+        {
+            NUM_THREADS = Convert.ToInt16(nudPPTN.Value);
+            PHOTONS_PER_LED = Convert.ToInt16(nudPPppl.Value) / (NUM_THREADS);
+            SECONDARY_EMISSION_PHOTONS = Convert.ToInt16(nudPPsep.Value);
+            NUM_PIXELS_SIDE = Convert.ToInt16(nudPPpps.Value);
+            STEPPERCENT = Convert.ToInt16(nudPPref.Value);
+
+            sideLength = Convert.ToDouble(nudPSEqps.Value) * 0.1;
+            resolution = sideLength / (double)NUM_PIXELS_SIDE;
+        }
+
         private void groupBox1_Enter(object sender, EventArgs e)
         {
 
@@ -274,6 +290,14 @@ namespace MCspot
         {
             panelCirc.Enabled = false;
             panelGrid.Enabled = true;
+        }
+
+        private void nudPCnl_ValueChanged(object sender, EventArgs e)
+        {
+            lLEDangle.Invoke(new Action(delegate ()
+            {
+                lLEDangle.Text = String.Format("LEDs angle: {0:0.0}°",360.0/Convert.ToDouble(nudPCnl.Value));
+            }));
         }
 
         public void GreatLoop(object param)
@@ -351,8 +375,8 @@ namespace MCspot
 
                         if (Double.IsNaN(angleEff[1]))
                         {
-                            System.Console.Write("error 1");
-                            angleEff[1] = 1.0;
+                            System.Console.Write("traingle error");
+                            angleEff[1] = 0.0;
                             // BUG : triangle sides a+b<c
                         }
 
@@ -412,11 +436,8 @@ namespace MCspot
                                 double I0 = 1;
                                 double Ifin = (I0 * angleEff[0] / (L1 * L1)) * angleEff[1] * angleEff[2] * angleEff[3] / (L2 * L2);
 
-                                if (Double.IsNaN(Ifin))
-                                {
-                                    System.Console.Write("error");
-                                    Ifin = 0;
-                                }
+                                if (Double.IsNaN(Ifin))                                                                    
+                                    Ifin = 0;                                
 
                                 int posx=0, posy=0;
 
