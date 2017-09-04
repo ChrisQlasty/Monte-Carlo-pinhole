@@ -554,6 +554,7 @@ namespace MCspot
             return bitmap;
         }    
      
+        /*
         public void DisplaySNR(double snr)
         {
             SNRqueue.Enqueue(snr);
@@ -564,6 +565,7 @@ namespace MCspot
                 chartSNR.Series[0].Points.DataBindY(SNRqueue);
             }));
         }
+        */
 
         public void DisplayERROR(double error)
         {
