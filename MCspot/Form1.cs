@@ -36,8 +36,9 @@ namespace MCspot
 
         double L1, L2;
         double sideLength = 0.26*2;
-        double resolution = 0.013;        
+        double resolution = 0.013;
 
+        Stopwatch sw = new Stopwatch();
         Image previewImage = null;
 
         CartesianCoordinates newOriginCart;
@@ -131,10 +132,20 @@ namespace MCspot
 
         private async void bStart_Click(object sender, EventArgs e)
         {
+            PHOTONSqueue.Clear();
+            ERRORqueue.Clear();
+            chartError.ChartAreas[0].AxisX.IsLogarithmic = false;
+            chartError.Series[0].Points.Clear();
+            chartLOC.Series[0].Points.Clear();
+
             InitializeSimulationProperties();
             InitializeEnvironment();
 
-            Stopwatch sw = new Stopwatch();
+            gbLEDs.Enabled = false;
+            gbSE.Enabled = false;
+            gbSP.Enabled = false;
+
+            sw = new Stopwatch();
             sw.Start();
 
             bStart.Enabled = false;
@@ -182,7 +193,7 @@ namespace MCspot
                             
                             foreach (Thread t in threadsArray)
                                 t.Join();
-                        });
+                        });                                         
 
                         refrcnt = 0;
 
@@ -221,16 +232,19 @@ namespace MCspot
 
                     }
 
-                    sl.SaveAs((tbFileName.Text.Length > 0 ? tbFileName.Text : "test") + ".xlsx");
+                    sl.SaveAs((tbFileName.Text.Length > 0 ? tbFileName.Text : "test") + ".xlsx");                    
 
-                    bStart.Enabled = true;
+                    sw.Stop();                    
 
-                    sw.Stop();
-
-                    System.Console.WriteLine("Time: " + sw.Elapsed);
-                    lTimeElapsed.Text = sw.Elapsed + "";
+                    System.Console.WriteLine("Time: " + sw.Elapsed);                    
+                    //lTimeElapsed.Text = sw.Elapsed + "";
                 }
             }
+
+            bStart.Enabled = true;
+            gbLEDs.Enabled = true;
+            gbSE.Enabled = true;
+            gbSP.Enabled = true;
         }
 
         private void InitializeSimulationProperties()
@@ -290,6 +304,20 @@ namespace MCspot
         {
             panelCirc.Enabled = false;
             panelGrid.Enabled = true;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void bClear_Click(object sender, EventArgs e)
+        {
+            PHOTONSqueue.Clear();
+            ERRORqueue.Clear();
+            chartError.ChartAreas[0].AxisX.IsLogarithmic = false;
+            chartError.Series[0].Points.Clear();
+            chartLOC.Series[0].Points.Clear();
         }
 
         private void nudPCnl_ValueChanged(object sender, EventArgs e)
@@ -476,6 +504,7 @@ namespace MCspot
                             double temppr = (double)(1.0 / NUM_THREADS) * refrcnt * STEPPERCENT;
                             temppr = temppr > 100.0 ? 100.0 : temppr;
                             lProgress.Text = String.Format("Progress: {0:0}%", temppr);
+                            labelPerc.Text = String.Format("Progress: {0:0}%", temppr);
                             progressBar1.Value = (int)temppr;
                         }));
 
@@ -490,6 +519,12 @@ namespace MCspot
                             Clipboard.SetImage(previewImage);
                         }));
                     }
+
+                    //update the time elapsed label
+                    lTimeElapsed.BeginInvoke(new Action(delegate ()
+                    {
+                        lTimeElapsed.Text = String.Format("Time: {0:00}:{1:00}:{2:00}.{3:00}", sw.Elapsed.Hours, sw.Elapsed.Minutes, sw.Elapsed.Seconds, sw.Elapsed.Milliseconds / 10);
+                    }));
                 }
             }
 
