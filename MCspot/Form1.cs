@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Imaging;
 using System.Collections.Generic;
+using System.Windows.Media.Imaging;
+using System.IO;
 
 namespace MCspot
 {
@@ -22,6 +24,8 @@ namespace MCspot
         static int STEPPERCENT = 10;
         static int REFRESH_STEP = 0;
         int refrcnt = 0;
+
+        int imc2 = 0;
 
         private static Random GLOBAL_RANDOM_VAR = new Random();
 
@@ -38,8 +42,11 @@ namespace MCspot
         double sideLength = 0.26*2;
         double resolution = 0.013;
 
+        const string userName = "qlast";
+
         Stopwatch sw = new Stopwatch();
         Image previewImage = null;
+        GifBitmapEncoder encoder = null;
 
         CartesianCoordinates newOriginCart;
         SphericalCoordinates newOriginSpher;
@@ -132,119 +139,138 @@ namespace MCspot
 
         private async void bStart_Click(object sender, EventArgs e)
         {
-            PHOTONSqueue.Clear();
-            ERRORqueue.Clear();
-            chartError.ChartAreas[0].AxisX.IsLogarithmic = false;
-            chartError.Series[0].Points.Clear();
-            chartLOC.Series[0].Points.Clear();
+            encoder = new GifBitmapEncoder();
+            FileStream stream = null;
+            try
+            {
+                stream = new FileStream(tbFileName.Text+ ".gif", FileMode.Create);                
+            }
+            catch(Exception eb)
+            {
+                System.Console.WriteLine(eb.Message);
+            }
+            imc2 = 0;
 
             InitializeSimulationProperties();
             InitializeEnvironment();
-
-            gbLEDs.Enabled = false;
-            gbSE.Enabled = false;
-            gbSP.Enabled = false;
-
-            sw = new Stopwatch();
-            sw.Start();
-
-            bStart.Enabled = false;
-
-            //----------------------------------------------------------------------   
-            SLDocument sl = new SLDocument();
-
-            sl.RenameWorksheet(SLDocument.DefaultFirstSheetName, "Settings");
-            sl.AddWorksheet("Res1");
-
-
-            Random r0 = new Random(Form1.GLOBAL_RANDOM_VAR.Next() & DateTime.Now.Millisecond);
-
-
-            double xstart = 0.5;
-            double xfinni = 0.5;
-            double ystart = 0.15;
-            double yfinni = 0.15;
-            double zstart = 2;
-            double zfinni = 2; 
-
-            double xstep = 0.1;
-            double ystep = 1.0;
-            double zstep = 1.0;
-
-            for (int zc = 0; zc <= (zfinni-zstart)/zstep; zc++)
+            //alert - ball too close
+            if (Convert.ToDouble(nudZs.Value) <= ballStruct.radius)
             {
-                for (int yc = 0; yc <= (yfinni-ystart)/ystep; yc++)
+                MessageBox.Show("The ball is too close to the pinhole surface (z<=R)!"+
+                    " Change one of the values to start the simulation.", "Attention!",
+                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
+            }
+            else
+            {
+                progressBar1.Value = 0;
+
+                PHOTONSqueue.Clear();
+                ERRORqueue.Clear();
+                chartError.ChartAreas[0].AxisX.IsLogarithmic = false;
+                chartError.Series[0].Points.Clear();
+                chartLOC.Series[0].Points.Clear();                
+
+                gbLEDs.Enabled = false;
+                gbSE.Enabled = false;
+                gbSP.Enabled = false;
+
+                sw = new Stopwatch();
+                sw.Start();
+
+                bStart.Enabled = false;
+
+                //----------------------------------------------------------------------   
+                SLDocument sl = new SLDocument();
+
+                sl.RenameWorksheet(SLDocument.DefaultFirstSheetName, "Settings");
+                sl.AddWorksheet("Res1");
+
+
+                Random r0 = new Random(Form1.GLOBAL_RANDOM_VAR.Next() & DateTime.Now.Millisecond);
+
+                double xstart = Convert.ToDouble(nudXs.Value);
+                double xfinni = Convert.ToDouble(nudXs.Value);
+                double ystart = Convert.ToDouble(nudYs.Value);
+                double yfinni = Convert.ToDouble(nudYs.Value);
+                double zstart = Convert.ToDouble(nudZs.Value);
+                double zfinni = Convert.ToDouble(nudZs.Value);
+
+                double xstep = 0.1;
+                double ystep = 1.0;
+                double zstep = 1.0;
+
+                int imc = 0;
+
+                for (int zc = 0; zc <= (zfinni - zstart) / zstep; zc++)
                 {
-                    for (int xc = 0; xc <= (xfinni-xstart)/xstep; xc++)
+                    for (int yc = 0; yc <= (yfinni - ystart) / ystep; yc++)
                     {
-                        // update the position of the ball
-                        var _inputParameters = new { Ax = xstart+(xstep*xc), Ay = ystart+(ystep*yc), Az = zstart+(zstep * zc), Ar = ballStruct.radius };                        
-
-                        await Task.Run(() =>
+                        for (int xc = 0; xc <= (xfinni - xstart) / xstep; xc++)
                         {
-                            Thread[] threadsArray = new Thread[NUM_THREADS];
+                            // update the position of the ball
+                            var _inputParameters = new { Ax = xstart + (xstep * xc), Ay = ystart + (ystep * yc), Az = zstart + (zstep * zc), Ar = ballStruct.radius };
 
-                            for (int threadIterator = 0; threadIterator < NUM_THREADS; threadIterator++)
-                            {                                
-                                threadsArray[threadIterator] = new Thread(GreatLoop);
-                                threadsArray[threadIterator].Priority = ThreadPriority.Highest;
-                                threadsArray[threadIterator].Start(_inputParameters);
-                            }
-                            
-                            foreach (Thread t in threadsArray)
-                                t.Join();
-                        });                                         
-
-                        refrcnt = 0;
-
-                        double qpA = pixelHIT[NUM_PIXELS_SIDE / 2-1, NUM_PIXELS_SIDE / 2];
-                        double qpB = pixelHIT[NUM_PIXELS_SIDE / 2,   NUM_PIXELS_SIDE / 2];
-                        double qpC = pixelHIT[NUM_PIXELS_SIDE / 2,   NUM_PIXELS_SIDE / 2-1];
-                        double qpD = pixelHIT[NUM_PIXELS_SIDE / 2-1, NUM_PIXELS_SIDE / 2-1];
-
-                        double tmpX = (qpA + qpD - qpB - qpC) / (qpA + qpB + qpC + qpD);
-                        double tmpY = (qpA + qpB - qpC - qpD) / (qpA + qpB + qpC + qpD);
-
-                        chartLOC.Series[0].Points.AddXY(tmpX, tmpY);
-
-                        for (int w = 0; w < NUM_PIXELS_SIDE; w++)
-                        {
-                            for (int k = 0; k < NUM_PIXELS_SIDE; k++)
+                            await Task.Run(() =>
                             {
-                                double tmp1 = pixelHIT[w, k];
-                                sl.SetCellValue(w + 1, k + 1, tmp1);
+                                Thread[] threadsArray = new Thread[NUM_THREADS];
+
+                                for (int threadIterator = 0; threadIterator < NUM_THREADS; threadIterator++)
+                                {
+                                    threadsArray[threadIterator] = new Thread(GreatLoop);
+                                    threadsArray[threadIterator].Priority = ThreadPriority.Highest;
+                                    threadsArray[threadIterator].Start(_inputParameters);
+                                }
+
+                                foreach (Thread t in threadsArray)
+                                    t.Join();
+                            });
+
+                            refrcnt = 0;
+
+                            double qpA = pixelHIT[NUM_PIXELS_SIDE / 2 - 1, NUM_PIXELS_SIDE / 2];
+                            double qpB = pixelHIT[NUM_PIXELS_SIDE / 2, NUM_PIXELS_SIDE / 2];
+                            double qpC = pixelHIT[NUM_PIXELS_SIDE / 2, NUM_PIXELS_SIDE / 2 - 1];
+                            double qpD = pixelHIT[NUM_PIXELS_SIDE / 2 - 1, NUM_PIXELS_SIDE / 2 - 1];
+
+                            double tmpX = (qpA + qpD - qpB - qpC) / (qpA + qpB + qpC + qpD);
+                            double tmpY = (qpA + qpB - qpC - qpD) / (qpA + qpB + qpC + qpD);
+
+                            chartLOC.Series[0].Points.AddXY(tmpX, tmpY);
+
+                            for (int w = 0; w < NUM_PIXELS_SIDE; w++)
+                            {
+                                for (int k = 0; k < NUM_PIXELS_SIDE; k++)
+                                {
+                                    double tmp1 = pixelHIT[w, k];
+                                    sl.SetCellValue(w + 1, k + 1, tmp1);
+                                }
                             }
+
+                            Array.Clear(pixelHIT, 0, NUM_PIXELS_SIDE * NUM_PIXELS_SIDE);                                                              
                         }
 
-                        Array.Clear(pixelHIT, 0, NUM_PIXELS_SIDE * NUM_PIXELS_SIDE);
+                        sl.SaveAs((tbFileName.Text.Length > 0 ? tbFileName.Text : "test") + ".xlsx");
 
-                        /*
-                        progressBar2.Invoke(new Action(delegate ()
-                        {
-                            progressBar2.Value = (int)(100.0 * (x - xstart + 1) / (xfinni - xstart));
-                            label1.Text = String.Format("{0:0.00}%", (100.0 * (x - xstart) / (xfinni - xstart)));
+                        sw.Stop();
 
-                            BitmapSource bSource = new BitmapImage(new Uri("C:\\Users\\" + userName + "\\Desktop\\obrazy\\im" + imc + ".png"));
-                            encoder.Frames.Add(BitmapFrame.Create(bSource));
-                            imc++;
-                        }));
-                        */
-
+                        System.Console.WriteLine("Time: " + sw.Elapsed);
+                        //lTimeElapsed.Text = sw.Elapsed + "";
                     }
-
-                    sl.SaveAs((tbFileName.Text.Length > 0 ? tbFileName.Text : "test") + ".xlsx");                    
-
-                    sw.Stop();                    
-
-                    System.Console.WriteLine("Time: " + sw.Elapsed);                    
-                    //lTimeElapsed.Text = sw.Elapsed + "";
                 }
-            }
 
-            bStart.Enabled = true;
-            gbLEDs.Enabled = true;
-            gbSE.Enabled = true;
-            gbSP.Enabled = true;
+                try
+                {
+                    encoder.Save(stream);
+                }
+                catch(Exception e3)
+                {
+                    System.Console.WriteLine(e3.Message);
+                }
+                bStart.Enabled = true;
+                gbLEDs.Enabled = true;
+                gbSE.Enabled = true;
+                gbSP.Enabled = true;
+            }
         }
 
         private void InitializeSimulationProperties()
@@ -363,7 +389,7 @@ namespace MCspot
             double Lphc = Elementary.DistanceFind(new CartesianCoordinates(x: BallHitPointT.x, y: BallHitPointT.y, z: BallHitPointT.z ), new CartesianCoordinates(x: 0, y: 0, z: 0));
             double alfaPH = Math.Atan(pinholeStuct.radius / Lphc) * 180.0 / Math.PI;            
 
-            for (int iPhoton = 0; iPhoton < PHOTONS_PER_LED; iPhoton++)
+            for (int iPhoton = 1; iPhoton <= PHOTONS_PER_LED; iPhoton++)
             {
 
                 for (int iled = 0; iled < LEDStruct.Length; iled++)
@@ -371,7 +397,6 @@ namespace MCspot
                     tempLED = LEDStruct[iled];
                     posLED = new CartesianCoordinates(x: LEDStruct[iled].x, y: LEDStruct[iled].y, z: LEDStruct[iled].z);                    
                 
-
 
                     double _tetha = localRandom.NextDouble() * alfaSA;
                     double _phi = localRandom.NextDouble() * 360.0;
@@ -490,8 +515,8 @@ namespace MCspot
                         }
                     }
                 }
-
-                if (iPhoton % REFRESH_STEP == 0)
+                
+                if (iPhoton % REFRESH_STEP == 0 && iPhoton > 0)
                 {
                     refrcnt++;
 
@@ -502,7 +527,7 @@ namespace MCspot
                         progressBar1.Invoke(new Action(delegate ()
                         {
                             double temppr = (double)(1.0 / NUM_THREADS) * refrcnt * STEPPERCENT;
-                            temppr = temppr > 100.0 ? 100.0 : temppr;
+                            temppr = temppr > 99.0 ? 100.0 : temppr;
                             lProgress.Text = String.Format("Progress: {0:0}%", temppr);
                             labelPerc.Text = String.Format("Progress: {0:0}%", temppr);
                             progressBar1.Value = (int)temppr;
@@ -517,6 +542,29 @@ namespace MCspot
                             pictureBox1.Image = previewImage;
                             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
                             Clipboard.SetImage(previewImage);
+
+                            try
+                            {
+                                //pictureBox1.Image.Save("C:\\Users\\" + userName + "\\Desktop\\obrazy2\\im" + imc2 + ".png", ImageFormat.Png);
+
+                                using (MemoryStream memory = new MemoryStream())
+                                {
+                                    using (FileStream fs = new FileStream("C:\\Users\\" + userName + "\\Desktop\\obrazy2\\im" + imc2 + ".png", FileMode.Create, FileAccess.ReadWrite))
+                                    {
+                                        pictureBox1.Image.Save(memory, ImageFormat.Png);
+                                        byte[] bytes = memory.ToArray();
+                                        fs.Write(bytes, 0, bytes.Length);
+                                    }
+                                }
+
+                                BitmapSource bSource = new BitmapImage(new Uri("C:\\Users\\" + userName + "\\Desktop\\obrazy2\\im" + imc2 + ".png"));                                
+                                encoder.Frames.Add(BitmapFrame.Create(bSource));
+                                imc2++;
+                            }
+                            catch(Exception eb2)
+                            {
+                                System.Console.WriteLine(eb2.Message);
+                            }
                         }));
                     }
 
@@ -535,13 +583,9 @@ namespace MCspot
         {
             lock (GLOBAL_RANDOM_VAR)
             {
-                for (int rowIterator = 0; rowIterator < NUM_PIXELS_SIDE; rowIterator++)
-                {
-                    for (int colIterator = 0; colIterator < NUM_PIXELS_SIDE; colIterator++)
-                    {
-                        pixelHIT[rowIterator, colIterator] += pixelHITtemp[rowIterator, colIterator];
-                    }
-                }                
+                for (int rowIterator = 0; rowIterator < NUM_PIXELS_SIDE; rowIterator++)                
+                    for (int colIterator = 0; colIterator < NUM_PIXELS_SIDE; colIterator++)                    
+                        pixelHIT[rowIterator, colIterator] += pixelHITtemp[rowIterator, colIterator];                 
             }            
         }
 
@@ -612,9 +656,7 @@ namespace MCspot
                 PHOTONSqueue.Enqueue(PHOTONS_PER_LED * SECONDARY_EMISSION_PHOTONS * STEPPERCENT * ERRORqueue.Count/1000);
                 chartError.Series[0].Points.DataBindXY(PHOTONSqueue, ERRORqueue);
 
-
-                chartError.ChartAreas[0].AxisX.IsLogarithmic = true;
-                
+                chartError.ChartAreas[0].AxisX.IsLogarithmic = true;                
             }));
         }
     }

@@ -28,13 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title4 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend8 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title3 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.chartError = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chartLOC = new System.Windows.Forms.DataVisualization.Charting.Chart();
@@ -88,6 +88,9 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.labelPerc = new System.Windows.Forms.Label();
+            this.nudZs = new System.Windows.Forms.NumericUpDown();
+            this.nudYs = new System.Windows.Forms.NumericUpDown();
+            this.nudXs = new System.Windows.Forms.NumericUpDown();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartError)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartLOC)).BeginInit();
@@ -114,6 +117,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudPCnl)).BeginInit();
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudZs)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudYs)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudXs)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -136,46 +142,46 @@
             // 
             // chartError
             // 
-            chartArea7.AxisY.IsLogarithmic = true;
-            chartArea7.Name = "ChartArea1";
-            this.chartError.ChartAreas.Add(chartArea7);
+            chartArea5.AxisY.IsLogarithmic = true;
+            chartArea5.Name = "ChartArea1";
+            this.chartError.ChartAreas.Add(chartArea5);
             this.chartError.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend7.Enabled = false;
-            legend7.Name = "Legend1";
-            this.chartError.Legends.Add(legend7);
+            legend5.Enabled = false;
+            legend5.Name = "Legend1";
+            this.chartError.Legends.Add(legend5);
             this.chartError.Location = new System.Drawing.Point(3, 362);
             this.chartError.Name = "chartError";
-            series7.ChartArea = "ChartArea1";
-            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series7.Legend = "Legend1";
-            series7.Name = "Series1";
-            this.chartError.Series.Add(series7);
+            series5.ChartArea = "ChartArea1";
+            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series5.Legend = "Legend1";
+            series5.Name = "Series1";
+            this.chartError.Series.Add(series5);
             this.chartError.Size = new System.Drawing.Size(433, 306);
             this.chartError.TabIndex = 5;
             this.chartError.Text = "chart2";
-            title4.Name = "Title1";
-            title4.Text = "Error plot";
-            this.chartError.Titles.Add(title4);
+            title3.Name = "Title1";
+            title3.Text = "Error plot";
+            this.chartError.Titles.Add(title3);
             // 
             // chartLOC
             // 
-            chartArea8.AxisX.Maximum = 1D;
-            chartArea8.AxisX.Minimum = -1D;
-            chartArea8.AxisY.Maximum = 1D;
-            chartArea8.AxisY.Minimum = -1D;
-            chartArea8.Name = "ChartArea1";
-            this.chartLOC.ChartAreas.Add(chartArea8);
+            chartArea6.AxisX.Maximum = 1D;
+            chartArea6.AxisX.Minimum = -1D;
+            chartArea6.AxisY.Maximum = 1D;
+            chartArea6.AxisY.Minimum = -1D;
+            chartArea6.Name = "ChartArea1";
+            this.chartLOC.ChartAreas.Add(chartArea6);
             this.chartLOC.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend8.Enabled = false;
-            legend8.Name = "Legend1";
-            this.chartLOC.Legends.Add(legend8);
+            legend6.Enabled = false;
+            legend6.Name = "Legend1";
+            this.chartLOC.Legends.Add(legend6);
             this.chartLOC.Location = new System.Drawing.Point(442, 362);
             this.chartLOC.Name = "chartLOC";
-            series8.ChartArea = "ChartArea1";
-            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series8.Legend = "Legend1";
-            series8.Name = "Series1";
-            this.chartLOC.Series.Add(series8);
+            series6.ChartArea = "ChartArea1";
+            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series6.Legend = "Legend1";
+            series6.Name = "Series1";
+            this.chartLOC.Series.Add(series6);
             this.chartLOC.Size = new System.Drawing.Size(341, 306);
             this.chartLOC.TabIndex = 5;
             this.chartLOC.Text = "chart1";
@@ -479,6 +485,9 @@
             // 
             // gbSE
             // 
+            this.gbSE.Controls.Add(this.nudXs);
+            this.gbSE.Controls.Add(this.nudYs);
+            this.gbSE.Controls.Add(this.nudZs);
             this.gbSE.Controls.Add(this.label9);
             this.gbSE.Controls.Add(this.nudPSEqps);
             this.gbSE.Controls.Add(this.label8);
@@ -843,6 +852,70 @@
             this.labelPerc.TabIndex = 4;
             this.labelPerc.Text = "Progress: 0%";
             // 
+            // nudZs
+            // 
+            this.nudZs.DecimalPlaces = 1;
+            this.nudZs.Location = new System.Drawing.Point(7, 254);
+            this.nudZs.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nudZs.Name = "nudZs";
+            this.nudZs.Size = new System.Drawing.Size(52, 20);
+            this.nudZs.TabIndex = 8;
+            this.nudZs.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            // 
+            // nudYs
+            // 
+            this.nudYs.DecimalPlaces = 1;
+            this.nudYs.Location = new System.Drawing.Point(7, 227);
+            this.nudYs.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nudYs.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            -2147483648});
+            this.nudYs.Name = "nudYs";
+            this.nudYs.Size = new System.Drawing.Size(52, 20);
+            this.nudYs.TabIndex = 9;
+            this.nudYs.Value = new decimal(new int[] {
+            15,
+            0,
+            0,
+            131072});
+            // 
+            // nudXs
+            // 
+            this.nudXs.DecimalPlaces = 1;
+            this.nudXs.Location = new System.Drawing.Point(7, 201);
+            this.nudXs.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nudXs.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            -2147483648});
+            this.nudXs.Name = "nudXs";
+            this.nudXs.Size = new System.Drawing.Size(52, 20);
+            this.nudXs.TabIndex = 10;
+            this.nudXs.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -884,6 +957,9 @@
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudZs)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudYs)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudXs)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -943,6 +1019,9 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label labelPerc;
+        private System.Windows.Forms.NumericUpDown nudXs;
+        private System.Windows.Forms.NumericUpDown nudYs;
+        private System.Windows.Forms.NumericUpDown nudZs;
     }
 }
 

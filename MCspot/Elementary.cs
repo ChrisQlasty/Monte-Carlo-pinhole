@@ -8,7 +8,7 @@ namespace MCspot
 {
     public static class Elementary
     {
-        const double EPSILON = 0.00001;
+        const double EPSILON = 10;
                   
         static public SphericalCoordinates Cart2Sphere(CartesianCoordinates kart)
         {
