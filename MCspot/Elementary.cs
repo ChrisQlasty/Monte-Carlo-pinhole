@@ -207,6 +207,8 @@ namespace MCspot
             Array.Copy(norm_1Dimage, Form1._1Dprevimage, NUM_PIXELS_SIDE * NUM_PIXELS_SIDE);
 
             errorSum = errorSum <= 0 ? EPSILON : errorSum;
+            errorSum /= (float)(NUM_PIXELS_SIDE * NUM_PIXELS_SIDE); // average error per pixel
+            errorSum *= 1000.0f; // multiply times certain constant for easier interpretation 
 
             return errorSum;
         }
