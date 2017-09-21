@@ -189,16 +189,17 @@ namespace MCspot
                 Random r0 = new Random(Form1.GLOBAL_RANDOM_VAR.Next() & DateTime.Now.Millisecond);
 
                 double xstart = Convert.ToDouble(nudXs.Value);
-                double xfinni = Convert.ToDouble(nudXs.Value);
+                double xstep = Convert.ToDouble(nudXst.Value);
+                double xfinni = Convert.ToDouble(nudXsp.Value);
+
                 double ystart = Convert.ToDouble(nudYs.Value);
-                double yfinni = Convert.ToDouble(nudYs.Value);
+                double ystep = Convert.ToDouble(nudYst.Value);
+                double yfinni = Convert.ToDouble(nudYsp.Value);
+
                 double zstart = Convert.ToDouble(nudZs.Value);
-                double zfinni = Convert.ToDouble(nudZs.Value);
-
-                double xstep = 0.1;
-                double ystep = 1.0;
-                double zstep = 1.0;
-
+                double zstep = Convert.ToDouble(nudZst.Value);
+                double zfinni = Convert.ToDouble(nudZsp.Value);
+                
                 int imc = 0;
 
                 for (int zc = 0; zc <= (zfinni - zstart) / zstep; zc++)
@@ -207,6 +208,7 @@ namespace MCspot
                     {
                         for (int xc = 0; xc <= (xfinni - xstart) / xstep; xc++)
                         {
+                            imc++;
                             // update the position of the ball
                             var _inputParameters = new { Ax = xstart + (xstep * xc), Ay = ystart + (ystep * yc), Az = zstart + (zstep * zc), Ar = ballStruct.radius };
 
@@ -237,26 +239,27 @@ namespace MCspot
 
                             chartLOC.Series[0].Points.AddXY(tmpX, tmpY);
 
+                            sl.AddWorksheet(String.Format("Res{0}",imc));
                             for (int w = 0; w < NUM_PIXELS_SIDE; w++)
                             {
                                 for (int k = 0; k < NUM_PIXELS_SIDE; k++)
                                 {
-                                    double tmp1 = pixelHIT[w, k];
-                                    sl.SetCellValue(w + 1, k + 1, tmp1);
+                                    try
+                                    {
+                                        double tmp1 = pixelHIT[w, k];
+                                        sl.SetCellValue(w + 1, k + 1, tmp1);
+                                    }catch(Exception erorWrite) { System.Console.WriteLine(erorWrite.Message); }
                                 }
                             }
 
                             Array.Clear(pixelHIT, 0, NUM_PIXELS_SIDE * NUM_PIXELS_SIDE);                                                              
-                        }
-
-                        sl.SaveAs((tbFileName.Text.Length > 0 ? tbFileName.Text : "test") + ".xlsx");
-
+                        }                       
                         sw.Stop();
-
-                        System.Console.WriteLine("Time: " + sw.Elapsed);
-                        //lTimeElapsed.Text = sw.Elapsed + "";
+                        System.Console.WriteLine("Time: " + sw.Elapsed);                        
                     }
                 }
+                sl.SaveAs((tbFileName.Text.Length > 0 ? tbFileName.Text : "test") + ".xlsx");
+
 
                 try
                 {
