@@ -28,13 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea9 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend9 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title5 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea10 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend10 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series10 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title4 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend8 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.chartError = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chartLOC = new System.Windows.Forms.DataVisualization.Charting.Chart();
@@ -103,6 +103,8 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.labelPerc = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.labelCP = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartError)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartLOC)).BeginInit();
@@ -160,46 +162,46 @@
             // 
             // chartError
             // 
-            chartArea9.AxisY.IsLogarithmic = true;
-            chartArea9.Name = "ChartArea1";
-            this.chartError.ChartAreas.Add(chartArea9);
+            chartArea7.AxisY.IsLogarithmic = true;
+            chartArea7.Name = "ChartArea1";
+            this.chartError.ChartAreas.Add(chartArea7);
             this.chartError.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend9.Enabled = false;
-            legend9.Name = "Legend1";
-            this.chartError.Legends.Add(legend9);
+            legend7.Enabled = false;
+            legend7.Name = "Legend1";
+            this.chartError.Legends.Add(legend7);
             this.chartError.Location = new System.Drawing.Point(3, 362);
             this.chartError.Name = "chartError";
-            series9.ChartArea = "ChartArea1";
-            series9.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series9.Legend = "Legend1";
-            series9.Name = "Series1";
-            this.chartError.Series.Add(series9);
+            series7.ChartArea = "ChartArea1";
+            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series7.Legend = "Legend1";
+            series7.Name = "Series1";
+            this.chartError.Series.Add(series7);
             this.chartError.Size = new System.Drawing.Size(433, 306);
             this.chartError.TabIndex = 5;
             this.chartError.Text = "chart2";
-            title5.Name = "Title1";
-            title5.Text = "Error plot";
-            this.chartError.Titles.Add(title5);
+            title4.Name = "Title1";
+            title4.Text = "Error plot";
+            this.chartError.Titles.Add(title4);
             // 
             // chartLOC
             // 
-            chartArea10.AxisX.Maximum = 1D;
-            chartArea10.AxisX.Minimum = -1D;
-            chartArea10.AxisY.Maximum = 1D;
-            chartArea10.AxisY.Minimum = -1D;
-            chartArea10.Name = "ChartArea1";
-            this.chartLOC.ChartAreas.Add(chartArea10);
+            chartArea8.AxisX.Maximum = 1D;
+            chartArea8.AxisX.Minimum = -1D;
+            chartArea8.AxisY.Maximum = 1D;
+            chartArea8.AxisY.Minimum = -1D;
+            chartArea8.Name = "ChartArea1";
+            this.chartLOC.ChartAreas.Add(chartArea8);
             this.chartLOC.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend10.Enabled = false;
-            legend10.Name = "Legend1";
-            this.chartLOC.Legends.Add(legend10);
+            legend8.Enabled = false;
+            legend8.Name = "Legend1";
+            this.chartLOC.Legends.Add(legend8);
             this.chartLOC.Location = new System.Drawing.Point(442, 362);
             this.chartLOC.Name = "chartLOC";
-            series10.ChartArea = "ChartArea1";
-            series10.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series10.Legend = "Legend1";
-            series10.Name = "Series1";
-            this.chartLOC.Series.Add(series10);
+            series8.ChartArea = "ChartArea1";
+            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series8.Legend = "Legend1";
+            series8.Name = "Series1";
+            this.chartLOC.Series.Add(series8);
             this.chartLOC.Size = new System.Drawing.Size(341, 306);
             this.chartLOC.TabIndex = 5;
             this.chartLOC.Text = "chart1";
@@ -503,6 +505,8 @@
             // 
             // gbSE
             // 
+            this.gbSE.Controls.Add(this.labelCP);
+            this.gbSE.Controls.Add(this.label22);
             this.gbSE.Controls.Add(this.label21);
             this.gbSE.Controls.Add(this.label20);
             this.gbSE.Controls.Add(this.label19);
@@ -536,7 +540,7 @@
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(108, 154);
+            this.label21.Location = new System.Drawing.Point(108, 135);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(27, 13);
             this.label21.TabIndex = 22;
@@ -545,7 +549,7 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(62, 154);
+            this.label20.Location = new System.Drawing.Point(62, 135);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(27, 13);
             this.label20.TabIndex = 21;
@@ -554,7 +558,7 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(15, 154);
+            this.label19.Location = new System.Drawing.Point(15, 135);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(27, 13);
             this.label19.TabIndex = 20;
@@ -563,7 +567,7 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(0, 229);
+            this.label18.Location = new System.Drawing.Point(0, 210);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(15, 13);
             this.label18.TabIndex = 19;
@@ -572,7 +576,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(0, 201);
+            this.label17.Location = new System.Drawing.Point(0, 182);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(15, 13);
             this.label17.TabIndex = 18;
@@ -581,7 +585,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(0, 177);
+            this.label16.Location = new System.Drawing.Point(0, 158);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(15, 13);
             this.label16.TabIndex = 17;
@@ -590,7 +594,12 @@
             // nudZsp
             // 
             this.nudZsp.DecimalPlaces = 1;
-            this.nudZsp.Location = new System.Drawing.Point(111, 227);
+            this.nudZsp.Location = new System.Drawing.Point(111, 208);
+            this.nudZsp.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.nudZsp.Name = "nudZsp";
             this.nudZsp.Size = new System.Drawing.Size(41, 20);
             this.nudZsp.TabIndex = 16;
@@ -603,7 +612,17 @@
             // nudYsp
             // 
             this.nudYsp.DecimalPlaces = 1;
-            this.nudYsp.Location = new System.Drawing.Point(111, 201);
+            this.nudYsp.Location = new System.Drawing.Point(111, 182);
+            this.nudYsp.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nudYsp.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            -2147483648});
             this.nudYsp.Name = "nudYsp";
             this.nudYsp.Size = new System.Drawing.Size(41, 20);
             this.nudYsp.TabIndex = 15;
@@ -616,7 +635,17 @@
             // nudXsp
             // 
             this.nudXsp.DecimalPlaces = 1;
-            this.nudXsp.Location = new System.Drawing.Point(111, 175);
+            this.nudXsp.Location = new System.Drawing.Point(111, 156);
+            this.nudXsp.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nudXsp.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            -2147483648});
             this.nudXsp.Name = "nudXsp";
             this.nudXsp.Size = new System.Drawing.Size(41, 20);
             this.nudXsp.TabIndex = 14;
@@ -634,12 +663,17 @@
             0,
             0,
             65536});
-            this.nudZst.Location = new System.Drawing.Point(65, 227);
+            this.nudZst.Location = new System.Drawing.Point(65, 208);
+            this.nudZst.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.nudZst.Minimum = new decimal(new int[] {
             1,
             0,
             0,
-            65536});
+            -2147483648});
             this.nudZst.Name = "nudZst";
             this.nudZst.Size = new System.Drawing.Size(41, 20);
             this.nudZst.TabIndex = 13;
@@ -657,12 +691,12 @@
             0,
             0,
             65536});
-            this.nudYst.Location = new System.Drawing.Point(65, 201);
+            this.nudYst.Location = new System.Drawing.Point(65, 182);
             this.nudYst.Minimum = new decimal(new int[] {
             1,
             0,
             0,
-            65536});
+            -2147483648});
             this.nudYst.Name = "nudYst";
             this.nudYst.Size = new System.Drawing.Size(41, 20);
             this.nudYst.TabIndex = 12;
@@ -680,12 +714,12 @@
             0,
             0,
             65536});
-            this.nudXst.Location = new System.Drawing.Point(65, 175);
+            this.nudXst.Location = new System.Drawing.Point(65, 156);
             this.nudXst.Minimum = new decimal(new int[] {
             1,
             0,
             0,
-            131072});
+            -2147483648});
             this.nudXst.Name = "nudXst";
             this.nudXst.Size = new System.Drawing.Size(41, 20);
             this.nudXst.TabIndex = 11;
@@ -698,7 +732,7 @@
             // nudXs
             // 
             this.nudXs.DecimalPlaces = 1;
-            this.nudXs.Location = new System.Drawing.Point(18, 175);
+            this.nudXs.Location = new System.Drawing.Point(18, 156);
             this.nudXs.Maximum = new decimal(new int[] {
             10,
             0,
@@ -721,7 +755,7 @@
             // nudYs
             // 
             this.nudYs.DecimalPlaces = 1;
-            this.nudYs.Location = new System.Drawing.Point(18, 201);
+            this.nudYs.Location = new System.Drawing.Point(18, 182);
             this.nudYs.Maximum = new decimal(new int[] {
             10,
             0,
@@ -736,15 +770,15 @@
             this.nudYs.Size = new System.Drawing.Size(41, 20);
             this.nudYs.TabIndex = 9;
             this.nudYs.Value = new decimal(new int[] {
-            15,
+            2,
             0,
             0,
-            131072});
+            65536});
             // 
             // nudZs
             // 
             this.nudZs.DecimalPlaces = 1;
-            this.nudZs.Location = new System.Drawing.Point(18, 227);
+            this.nudZs.Location = new System.Drawing.Point(18, 208);
             this.nudZs.Maximum = new decimal(new int[] {
             10,
             0,
@@ -1108,6 +1142,24 @@
             this.pictureBox1.TabIndex = 3;
             this.pictureBox1.TabStop = false;
             // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(1, 239);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(135, 13);
+            this.label22.TabIndex = 23;
+            this.label22.Text = "Computing position (x, y, z):";
+            // 
+            // labelCP
+            // 
+            this.labelCP.AutoSize = true;
+            this.labelCP.Location = new System.Drawing.Point(36, 260);
+            this.labelCP.Name = "labelCP";
+            this.labelCP.Size = new System.Drawing.Size(88, 13);
+            this.labelCP.TabIndex = 24;
+            this.labelCP.Text = "(0.00, 0.00, 0.00)";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1232,6 +1284,8 @@
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label labelCP;
+        private System.Windows.Forms.Label label22;
     }
 }
 

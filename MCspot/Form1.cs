@@ -208,9 +208,14 @@ namespace MCspot
                     {
                         for (int xc = 0; xc <= (xfinni - xstart) / xstep; xc++)
                         {
+                            labelCP.Invoke(new Action(delegate ()
+                            {
+                                labelCP.Text = String.Format("({0:0.00}, {1:0.00}, {2:0.00})", xstart + (xstep * xc), ystart + (ystep * yc), zstart + (zstep * zc));
+                            }));
+
                             imc++;
                             // update the position of the ball
-                            var _inputParameters = new { Ax = xstart + (xstep * xc), Ay = ystart + (ystep * yc), Az = zstart + (zstep * zc), Ar = ballStruct.radius };
+                            var _inputParameters = new { Ax = -xstart - (xstep * xc), Ay = -ystart - (ystep * yc), Az = zstart + (zstep * zc), Ar = ballStruct.radius };
 
                             await Task.Run(() =>
                             {
@@ -431,7 +436,7 @@ namespace MCspot
 
                         if (Double.IsNaN(angleEff[1]))
                         {
-                            System.Console.Write("traingle error");
+                            //System.Console.Write("traingle error");
                             angleEff[1] = 0.0;
                             // BUG : triangle sides a+b<c
                         }
