@@ -12,8 +12,8 @@ Text.
 
 | Angular config  | Grid config |
 | ------------- | ------------- |
-| <p align="center"><img src="./src/angsm.png" width="50%" height="50%"></p> | <img src="./src/gridsm.png" width="50%" height="50%">  |
-| <img src="./src/anglren.png">  | <img src="./src/gridren.png">  |
+| <p align="center"><img src="./src/angsm.png" width="50%" height="50%"></p> | <p align="center"><img src="./src/gridsm.png" width="50%" height="50%"></p>  |
+| <p align="center"><img src="./src/anglren.png"></p>  | <p align="center"><img src="./src/gridren.png"></p>  |
 
 ### Dependencies
 
