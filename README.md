@@ -1,4 +1,4 @@
-# Monte-Carlo-pinhole simulator overview
+# Monte-Carlo-pinhole
 
 The multi thread simulator of the predefined LEDs arrangement - ball - pinhole setup, written in C#. A large number of photons are emitted from each of the light sources, some reflect from the ball, go through the pinhole and meet the image plane. Simulator was utilized to estimate some dimensions for the sensor design.
 
@@ -6,8 +6,14 @@ The multi thread simulator of the predefined LEDs arrangement - ball - pinhole s
 
 Text.
 
-![Overview image](./src/Readme.png)
+![Overview image](./src/Readme.png | height=300)
 
+### LEDs configurations
+
+| Grid   | Second Header |
+| ------------- | ------------- |
+| Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  |
 
 ### Dependencies
 
