@@ -5,16 +5,16 @@ The multi thread simulator of the predefined LEDs arrangement - ball - pinhole s
 ## Readme overiview
 
 * Simulation environment
- * LEDs configurations
+  * LEDs configurations
 * Simulator app
- * GUI
- * Output files
+  * GUI
+  * Output files
 * Some results
- * HighRes sensor
-  * blur effect
-  * ball motion tracking
+  * HighRes sensor
+    * blur effect
+    * ball motion tracking
  * QP sensor
-  * ball motion tracking
+   * ball motion tracking
 
 
 ## Simulation environment
