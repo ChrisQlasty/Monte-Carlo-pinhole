@@ -6,15 +6,14 @@ The multi thread simulator of the predefined LEDs arrangement - ball - pinhole s
 
 Text.
 
-![Overview image](./src/Readme.png){:height="50%" width="50%"}
-<img src="./src/Readme.png" width="50%" height="50%">
+![Overview image](./src/Readme.png)
 
 ### LEDs configurations
 
 | Grid   | Second Header |
 | ------------- | ------------- |
-| Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  |
+| <img src="./src/angsm.png" width="50%" height="50%">  | <img src="./src/gridsm.png" width="50%" height="50%">  |
+| <img src="./src/anglen.png">  | <img src="./src/gridren.png">  |
 
 ### Dependencies
 
