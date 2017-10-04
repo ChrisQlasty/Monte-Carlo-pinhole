@@ -13,9 +13,10 @@ The multi thread simulator of the predefined LEDs arrangement - ball - pinhole s
   * HighRes sensor
     * blur effect
     * ball motion tracking
- * QP sensor
-   * ball motion tracking
-
+  * QP sensor
+    * ball motion tracking
+* Dependencies
+* Usage
 
 ## Simulation environment
 
