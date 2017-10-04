@@ -12,7 +12,7 @@ Text.
 
 | Angular config  | Grid config |
 | ------------- | ------------- |
-| <img src="./src/angsm.png" width="50%" height="50%">  | <img src="./src/gridsm.png" width="50%" height="50%">  |
+| <center><img src="./src/angsm.png" width="50%" height="50%"></center>  | <img src="./src/gridsm.png" width="50%" height="50%">  |
 | <img src="./src/anglren.png">  | <img src="./src/gridren.png">  |
 
 ### Dependencies
