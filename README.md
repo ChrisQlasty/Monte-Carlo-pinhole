@@ -6,6 +6,8 @@ The multi thread simulator of the predefined LEDs arrangement - ball - pinhole s
 
 Text.
 
+![alt text](./src/readme.png)
+
 
 ### Dependencies
 
