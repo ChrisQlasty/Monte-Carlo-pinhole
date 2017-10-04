@@ -7,6 +7,7 @@ The multi thread simulator of the predefined LEDs arrangement - ball - pinhole s
 Text.
 
 ![Overview image](./src/Readme.png){:height="50%" width="50%"}
+<img src="./src/Readme.png" width="200" height="200">
 
 ### LEDs configurations
 
