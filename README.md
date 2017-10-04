@@ -13,7 +13,7 @@ Text.
 | Grid   | Second Header |
 | ------------- | ------------- |
 | <img src="./src/angsm.png" width="50%" height="50%">  | <img src="./src/gridsm.png" width="50%" height="50%">  |
-| <img src="./src/anglen.png">  | <img src="./src/gridren.png">  |
+| <img src="./src/anglren.png">  | <img src="./src/gridren.png">  |
 
 ### Dependencies
 
