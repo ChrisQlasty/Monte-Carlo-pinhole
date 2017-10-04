@@ -38,6 +38,7 @@ Text.
 ### HighRes sensor
 #### blur effect
 The pinhole diameter was varied in the range of R=0.5 mm to 3.5 mm with the step of 0.1 mm.
+
 ![blur image](./src/blur.gif)
 
 #### ball motion tracking
