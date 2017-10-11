@@ -42,8 +42,7 @@ The pinhole diameter was varied in the range of R=0.5 mm to 3.5 mm with the step
 ![blur image](./src/blur.gif)
 <img src="./src/blur.gif"
   dynsrc="../src/blur.gif"
-  loop=infinite
-  >
+  loop=infinite>
 
 
 #### ball motion tracking
