@@ -25,6 +25,7 @@ The image below presents the simulation environment. Notice that the sensor and 
 ![Overview image](./src/Readme.png)
 
 ### LEDs configurations
+The simulator allows to choose between two configurations of LEDs highlight system. The angular has two explicit parameters: n - number of photodiodes and <b>r</b> (radius - distance from the center of a pinhole and centers of photodiodes)/
 
 | Angular config  | Grid config |
 | ------------- | ------------- |
