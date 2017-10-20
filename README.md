@@ -29,7 +29,7 @@ The simulator allows to choose between two configurations of LEDs highlight syst
 * <u>Angular</u>, which has two explicit parameters:  
   * <b>n</b> - number of photodiodes  
   * <b>r</b> (radius - distance from the center of a pinhole and centers of photodiodes).  
-Based upon the <b>n</b> the angle between adjacent photodiodes is calculated (360/n) and is displayed in the GUI of an app.
+ Based upon the <b>n</b> the angle between adjacent photodiodes is calculated (360/n) and is displayed in the GUI of an app.
 
 | Angular config |   Grid config  |
 |----------------|----------------|
