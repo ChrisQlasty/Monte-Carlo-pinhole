@@ -29,7 +29,7 @@ The simulator allows to choose between two configurations of LEDs highlight syst
 * _Angular_, which has two explicit parameters:  
   * <b>R</b> (radius - distance from the center of a pinhole and centers of photodiodes).  
   * <b>n</b> - number of photodiodes    
- Based upon the <b>n</b> the angle between adjacent photodiodes is calculated (360/n) and is displayed in the GUI of an app.
+ Based upon the <b>n</b> angle between adjacent photodiodes is calculated (360°/n) and is displayed in the GUI of an app.
 * _Grid_, which has three explicit parameters:  
   * <b>rows</b> - number of rows
   * <b>cols</b> - number of columns
