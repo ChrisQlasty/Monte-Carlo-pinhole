@@ -39,6 +39,7 @@ The simulator allows to choose between two configurations of LEDs highlight syst
 |----------------|----------------|
 | <p align="center"><img src="./src/angsm.png" width="50%" height="50%"></p> | <p align="center"><img src="./src/gridsm.png" width="50%" height="50%"></p>  |
 | <p align="center"><img src="./src/anglren.png"></p>  | <p align="center"><img src="./src/gridren.png"></p>  |
+
 The upper row shows exemplary configurations of illumination systems (angular: n=6, R=5, grid: rows=3, cols=2, spacing=5).
 The lower row presents how the high resolution sensor (mounted on the image plane) perceives the ball highlighted by each of the configurations.
 
