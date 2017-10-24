@@ -9,6 +9,7 @@ The multi thread simulator of the predefined LEDs arrangement - ball - pinhole s
 * Simulator app
   * GUI
   * Output files
+  * Theory of operation
 * Some results
   * HighRes sensor
     * blur effect
@@ -46,6 +47,7 @@ The lower row presents how the high resolution sensor (mounted on the image plan
 ## Simulator app
 ### GUI
 ### Output files
+### Theory of operation
 ## Some results
 ### HighRes sensor
 #### Blur effect
