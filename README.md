@@ -48,7 +48,7 @@ The lower row presents how the high resolution sensor (mounted on the image plan
 ### GUI
 ### Output files
 ### Theory of operation
-Each of the photodiodes emits a specified number of photons. For each of them the exit angles in the Spherical Coordinate system (φ, θ) are sampled. The range od drawn angles is limited in respect to the visibility of the ball by the closest photodiode. Therefore, all of the PDs highlight the same volume so they have the same density of probability of emitted photons. The percentage of photons, which hit the obstacle is significantly higher than without this restiction, hence the overall computation is more efficient.
+Each of the photodiodes emits a specified number of photons. For each of them the exit angles in the Spherical Coordinate system (φ, θ) are sampled. The range of drawn angles is limited in respect to the visibility of the ball by the closest photodiode. Therefore, all of the PDs highlight the same volume so they have the same probability density of emitted photons. The percentage of photons, which hit the obstacle is significantly higher than without this restriction, hence the overall computation process is more efficient.
 ## Some results
 ### HighRes sensor
 #### Blur effect
