@@ -48,6 +48,7 @@ The lower row presents how the high resolution sensor (mounted on the image plan
 ### GUI
 ### Output files
 ### Theory of operation
+From each of the photodiodes a specified number of photons are emitted. For each of them the exit angles in the Spherical Coordinate system (φ, θ) are sampled.
 ## Some results
 ### HighRes sensor
 #### Blur effect
