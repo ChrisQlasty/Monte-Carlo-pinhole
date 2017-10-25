@@ -47,6 +47,11 @@ The lower row presents how the high resolution sensor (mounted on the image plan
 ## Simulator app
 ### GUI
 ### Output files
+In the default setting the application saves:
+* each of the images from the picturebox - in the .png format
+* an animation created from the saved images - in the .gif format
+* a workbook file with the values of light intensity perceived by each pixel of the sensor - in the .xlsx format
+
 ### Theory of operation
 Each of the photodiodes emits a specified number of photons. For each of them the exit angles in the Spherical Coordinate system (φ, θ) are sampled. The range of drawn angles is limited in respect to the visibility of the ball by the closest photodiode. Therefore, all of the PDs highlight the same volume so they have the same probability density of emitted photons. The percentage of photons, which hit the obstacle is significantly higher than without this restriction, hence the overall computation process is more efficient.
 ## Some results
