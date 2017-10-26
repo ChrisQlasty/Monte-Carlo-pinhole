@@ -64,7 +64,7 @@ The pinhole diameter was varied in the range of R=0.5 mm to 3.5 mm with the step
 
 #### ball motion tracking
 ### QP sensor
-The QP abbreviation stands for Quadrant Photodiode. It means that the simulated sensor consists of only four pixels.
+The QP abbreviation stands for Quadrant Photodiode. It means that the simulated sensor consists of only four pixels. In this case the image from the picturebox is less meaningful and the scatter plot should be observed. Based on the proportions of illumination level between each of the pixels a position of the light reflecting object can be roughly estimated.
 #### ball motion tracking
    
 ### Dependencies
