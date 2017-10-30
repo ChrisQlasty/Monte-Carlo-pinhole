@@ -53,7 +53,10 @@ In the default setting the application saves:
 * a workbook file with the values of light intensity perceived by each pixel of the sensor - in the .xlsx format  
 Note that the workbook can save results from different steps of a simulation in separate worksheets.
 ### Theory of operation
-Each of the photodiodes emits a specified number of photons. For each of them the exit angles in the Spherical Coordinate system (φ, θ) are sampled. The range of drawn angles is limited in respect to the visibility of the ball by the closest photodiode. Therefore, all of the PDs highlight the same volume so they have the same probability density of emitted photons. The percentage of photons, which hit the obstacle is significantly higher than without this restriction, hence the overall computation process is more efficient.
+Each of the photodiodes emits a specified number of photons. For each of them the exit angles in the Spherical Coordinate system (φ, θ) are sampled. The range of drawn angles is limited in respect to the visibility of the ball by the closest photodiode (largest cone). Therefore, all of the PDs highlight the same volume so they have the same probability density of emitted photons. The percentage of photons, which hit the obstacle is significantly higher than without this restriction, hence the overall computation process is more efficient. The simplified model (Lambertian surface) was utilized so both the emission and hit efficiency (amount of energy after the event in relation to the amoun of energy before the event) depend on the cosine of emission/incidence angle, regardless the type of object (plane, ball).
+The computation steps for each photon are as follows:
+*  exit angles are drawn (φ, θ)
+*  ...
 ## Some results
 ### HighRes sensor
 #### Blur effect
