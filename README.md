@@ -66,8 +66,9 @@ The computation steps for each photon (cone calculations not mentioned here) are
 *  final energy of a photon is added to proper pixel of the sensor
 ## Some results
 ### HighRes sensor
+In this section there are presented simulation results obtained from sensor with large amount of pixels (e.g. 100x100 px).
 #### Blur effect
-The pinhole diameter was varied in the range of R=0.5 mm to 3.5 mm with the step of 0.1 mm.
+The pinhole diameter was varied in the range of R=0.5 mm to 3.5 mm with step of 0.1 mm.
 
 ![blur image](./src/blur2.gif)
 
