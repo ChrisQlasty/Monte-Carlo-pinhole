@@ -55,15 +55,15 @@ Note that the workbook can save results from different steps of a simulation in 
 ### Theory of operation
 Each of the photodiodes emits a number of photons specified by the user. For each photon the exit angles in the Spherical Coordinate system (φ, θ) are sampled. The range of drawn angles is limited in respect to the visibility of the ball by the closest photodiode (largest cone). Therefore, all of the PDs highlight the same volume so they generate the same probability density of emitted photons. The percentage of photons, which hit the obstacle is significantly higher than without this restriction, hence the overall computation process is more efficient. The same method is applied for reflected photons: the largest cone is estimated (from the point closest to the PH) and secondary photons are emitted (for the increased computation efficiency). The simplified model (Lambertian surface) was utilized so both the emission and hit efficiency (amount of energy after the event in relation to the amount of energy before the event) depend on the cosine of emission/incidence angle, regardless the type of object (plane, ball).  
 The computation steps for each photon (cone calculations not mentioned here) are as follows:
-*  exit angles are drawn (φ, θ); emission efficiency is calculated
-*  it is estimated wheter a photon hits the ball
-*  if positive, hit efficiency is calculated
-*  it is estimated wheter a pinhole is visible from the obtained hit point
-*  if positive, number of secondary photons exit angles are drawn; emission efficiencies are calculated
-*  it is estimated whether a secondary photon goes through the pinhole
-*  it is estimated wheater a photon hits the active surface (sensor) on the image plane
-*  if positive, hit efficiency is calculated and the total length of the photon from a photodiode
-*  final energy of a photon is added to proper pixel of the sensor
+*  exit angles are drawn (φ, θ); emission efficiency is calculated,
+*  it is estimated wheter a photon hits the ball,
+*  if positive, hit efficiency is calculated,
+*  it is estimated wheter a pinhole is visible from the obtained hit point,
+*  if positive, number of secondary photons exit angles are drawn; emission efficiencies are calculated,
+*  it is estimated whether a secondary photon goes through the pinhole,
+*  if positive, it is estimated wheater a photon hits the active surface (sensor) on the image plane,
+*  if positive, hit efficiency is calculated and the total length of the path of a photon from a photodiode is measured,
+*  final energy of a photon is added to a proper pixel of the sensor.
 ## Some results
 ### HighRes sensor
 In this section there are presented simulation results obtained from sensor with large amount of pixels (e.g. 100x100 px).
