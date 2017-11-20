@@ -11,6 +11,7 @@ using System.Drawing.Imaging;
 using System.Collections.Generic;
 using System.Windows.Media.Imaging;
 using System.IO;
+using System.Runtime.Serialization;
 
 namespace MCspot
 {
@@ -25,7 +26,7 @@ namespace MCspot
         static int REFRESH_STEP = 0;
         int refrcnt = 0;
 
-        int imc2 = 0;
+        int imc2 = 0;        
 
         private static Random GLOBAL_RANDOM_VAR = new Random();
 
@@ -43,6 +44,7 @@ namespace MCspot
         double resolution = 0.013;
 
         const string userName = "qlast";
+        const string imgPath = "C:\\Users\\" + userName + "\\Desktop\\obrazy2\\im";
 
         Stopwatch sw = new Stopwatch();
         Image previewImage = null;
@@ -57,7 +59,6 @@ namespace MCspot
         public Form1()
         {
             InitializeComponent();            
-
             // other elements
             lProgress.BackColor = System.Drawing.Color.Transparent;
             nudPPTN.Maximum = Environment.ProcessorCount - 1; //limit the number of threads
@@ -68,6 +69,88 @@ namespace MCspot
         private void bCpyImg_Click(object sender, EventArgs e)
         {
             Clipboard.SetImage(previewImage);
+        }
+
+        public void InitializeGifParams(int framesInAnimation)
+        {
+            const int PropertyTagFrameDelay = 0x5100;
+            const int PropertyTagLoopCount = 0x5101;
+            const short PropertyTagTypeLong = 4;
+            const short PropertyTagTypeShort = 3;
+
+            const int UintBytes = 4;
+
+            //...            
+            System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
+            //EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, 0L);
+            EncoderParameter encCompressionrParameter = new EncoderParameter(System.Drawing.Imaging.Encoder.Compression, (long)EncoderValue.CompressionNone); ;
+            EncoderParameter encQualityParameter = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 100L);
+
+            var gifEncoder = GetEncoder(ImageFormat.Gif);
+            // Params of the first frame.
+            var encoderParams1 = new EncoderParameters(3);
+            encoderParams1.Param[0] = new EncoderParameter(Encoder.SaveFlag, (long)EncoderValue.MultiFrame);
+            encoderParams1.Param[1] = encCompressionrParameter;
+            encoderParams1.Param[2] = encQualityParameter;
+            //encoderParams1.Param[1] = myEncoderParameter;
+            //encoderParams1.Param[1] = new EncoderParameter(Encoder.ColorDepth, 8);            
+            // Params of other frames.
+            var encoderParamsN = new EncoderParameters(3);
+            encoderParamsN.Param[0] = new EncoderParameter(Encoder.SaveFlag, (long)EncoderValue.FrameDimensionTime);
+            encoderParamsN.Param[1] = encCompressionrParameter;
+            encoderParamsN.Param[2] = encQualityParameter;
+            //encoderParamsN.Param[1] = myEncoderParameter;
+            //encoderParamsN.Param[1] = new EncoderParameter(Encoder.ColorDepth, 8);
+            // Params for the finalizing call.
+            var encoderParamsFlush = new EncoderParameters(1);
+            encoderParamsFlush.Param[0] = new EncoderParameter(Encoder.SaveFlag, (long)EncoderValue.Flush);
+
+            // PropertyItem for the frame delay (apparently, no other way to create a fresh instance).
+            var frameDelay = (PropertyItem)FormatterServices.GetUninitializedObject(typeof(PropertyItem));
+            frameDelay.Id = PropertyTagFrameDelay;
+            frameDelay.Type = PropertyTagTypeLong;
+            // Length of the value in bytes.
+            frameDelay.Len = framesInAnimation * UintBytes;
+            // The value is an array of 4-byte entries: one per frame.
+            // Every entry is the frame delay in 1/100-s of a second, in little endian.
+            frameDelay.Value = new byte[framesInAnimation * UintBytes];
+            // E.g., here, we're setting the delay of every frame to 1 second.
+            var frameDelayBytes = BitConverter.GetBytes((uint)10);
+            for (int j = 0; j < framesInAnimation; ++j)
+                Array.Copy(frameDelayBytes, 0, frameDelay.Value, j * UintBytes, UintBytes);
+
+            // PropertyItem for the number of animation loops.
+            var loopPropertyItem = (PropertyItem)FormatterServices.GetUninitializedObject(typeof(PropertyItem));
+            loopPropertyItem.Id = PropertyTagLoopCount;
+            loopPropertyItem.Type = PropertyTagTypeShort;
+            loopPropertyItem.Len = 1;
+            // 0 means to animate forever.
+            loopPropertyItem.Value = BitConverter.GetBytes((ushort)0);            
+
+            using (var stream = new FileStream(tbFileName.Text+ "L.gif", FileMode.Create))
+            {
+                bool first = true;
+                Bitmap firstBitmap = null;
+                // Bitmaps is a collection of Bitmap instances that'll become gif frames.
+                for(int imcnt=0;imcnt<framesInAnimation;imcnt++)
+                {
+                    Bitmap bm = new Bitmap(imgPath + imcnt + ".png");
+                    if (first)
+                    {
+                        //BitmapSource bSource = new BitmapImage(new Uri(imgPath + imcnt + ".png"));                        
+                        firstBitmap = bm;
+                        firstBitmap.SetPropertyItem(frameDelay);
+                        firstBitmap.SetPropertyItem(loopPropertyItem);
+                        firstBitmap.Save(stream, gifEncoder, encoderParams1);                        
+                        first = false;                                                
+                    }
+                    else
+                    {
+                        firstBitmap.SaveAdd(bm, encoderParamsN);
+                    }                    
+                }
+                firstBitmap.SaveAdd(encoderParamsFlush);
+            }
         }
 
         public void InitializeEnvironment()
@@ -202,65 +285,74 @@ namespace MCspot
                 
                 int imc = 0;
 
-                for (int zc = 0; zc <= (zfinni - zstart) / zstep; zc++)
+                for (int phRad = 1; phRad <= 35; phRad++)
                 {
-                    for (int yc = 0; yc <= (yfinni - ystart) / ystep; yc++)
+                    for (int zc = 0; zc <= (zfinni - zstart) / zstep; zc++)
                     {
-                        for (int xc = 0; xc <= (xfinni - xstart) / xstep; xc++)
+                        for (int yc = 0; yc <= (yfinni - ystart) / ystep; yc++)
                         {
-                            labelCP.Invoke(new Action(delegate ()
+                            for (int xc = 0; xc <= (xfinni - xstart) / xstep; xc++)
                             {
-                                labelCP.Text = String.Format("({0:0.00}, {1:0.00}, {2:0.00})", xstart + (xstep * xc), ystart + (ystep * yc), zstart + (zstep * zc));
-                            }));
+                                CartesianCoordinates pinholeCoordinates = new CartesianCoordinates(x: 0, y: 0, z: 0);
+                                pinholeStuct = new GeometricalObject(pinholeCoordinates, Elementary.Cart2Sphere(pinholeCoordinates), radius: phRad*0.01, side: 0);
+                                CartesianCoordinates ballCh = new CartesianCoordinates(x: 0, y: 0, z: 0);
+                                ballStructh = new GeometricalObject(ballCh, Elementary.Cart2Sphere(ballCh), radius: pinholeStuct.radius, side: 0);
 
-                            imc++;
-                            // update the position of the ball
-                            var _inputParameters = new { Ax = -xstart - (xstep * xc), Ay = -ystart - (ystep * yc), Az = zstart + (zstep * zc), Ar = ballStruct.radius };
-
-                            await Task.Run(() =>
-                            {
-                                Thread[] threadsArray = new Thread[NUM_THREADS];
-
-                                for (int threadIterator = 0; threadIterator < NUM_THREADS; threadIterator++)
+                                labelCP.Invoke(new Action(delegate ()
                                 {
-                                    threadsArray[threadIterator] = new Thread(GreatLoop);
-                                    threadsArray[threadIterator].Priority = ThreadPriority.Highest;
-                                    threadsArray[threadIterator].Start(_inputParameters);
-                                }
+                                    labelCP.Text = String.Format("({0:0.00}, {1:0.00}, {2:0.00})", xstart + (xstep * xc), ystart + (ystep * yc), zstart + (zstep * zc));
+                                }));
 
-                                foreach (Thread t in threadsArray)
-                                    t.Join();
-                            });
+                                imc++;
+                                // update the position of the ball
+                                var _inputParameters = new { Ax = -xstart - (xstep * xc), Ay = -ystart - (ystep * yc), Az = zstart + (zstep * zc), Ar = ballStruct.radius };
 
-                            refrcnt = 0;
-
-                            double qpA = pixelHIT[NUM_PIXELS_SIDE / 2 - 1, NUM_PIXELS_SIDE / 2];
-                            double qpB = pixelHIT[NUM_PIXELS_SIDE / 2, NUM_PIXELS_SIDE / 2];
-                            double qpC = pixelHIT[NUM_PIXELS_SIDE / 2, NUM_PIXELS_SIDE / 2 - 1];
-                            double qpD = pixelHIT[NUM_PIXELS_SIDE / 2 - 1, NUM_PIXELS_SIDE / 2 - 1];
-
-                            double tmpX = (qpA + qpD - qpB - qpC) / (qpA + qpB + qpC + qpD);
-                            double tmpY = (qpA + qpB - qpC - qpD) / (qpA + qpB + qpC + qpD);
-
-                            chartLOC.Series[0].Points.AddXY(tmpX, tmpY);
-
-                            sl.AddWorksheet(String.Format("Res{0}",imc));
-                            for (int w = 0; w < NUM_PIXELS_SIDE; w++)
-                            {
-                                for (int k = 0; k < NUM_PIXELS_SIDE; k++)
+                                await Task.Run(() =>
                                 {
-                                    try
+                                    Thread[] threadsArray = new Thread[NUM_THREADS];
+
+                                    for (int threadIterator = 0; threadIterator < NUM_THREADS; threadIterator++)
                                     {
-                                        double tmp1 = pixelHIT[w, k];
-                                        sl.SetCellValue(w + 1, k + 1, tmp1);
-                                    }catch(Exception erorWrite) { System.Console.WriteLine(erorWrite.Message); }
-                                }
-                            }
+                                        threadsArray[threadIterator] = new Thread(GreatLoop);
+                                        threadsArray[threadIterator].Priority = ThreadPriority.Highest;
+                                        threadsArray[threadIterator].Start(_inputParameters);
+                                    }
 
-                            Array.Clear(pixelHIT, 0, NUM_PIXELS_SIDE * NUM_PIXELS_SIDE);                                                              
-                        }                       
-                        sw.Stop();
-                        System.Console.WriteLine("Time: " + sw.Elapsed);                        
+                                    foreach (Thread t in threadsArray)
+                                        t.Join();
+                                });
+
+                                refrcnt = 0;
+
+                                double qpA = pixelHIT[NUM_PIXELS_SIDE / 2 - 1, NUM_PIXELS_SIDE / 2];
+                                double qpB = pixelHIT[NUM_PIXELS_SIDE / 2, NUM_PIXELS_SIDE / 2];
+                                double qpC = pixelHIT[NUM_PIXELS_SIDE / 2, NUM_PIXELS_SIDE / 2 - 1];
+                                double qpD = pixelHIT[NUM_PIXELS_SIDE / 2 - 1, NUM_PIXELS_SIDE / 2 - 1];
+
+                                double tmpX = (qpA + qpD - qpB - qpC) / (qpA + qpB + qpC + qpD);
+                                double tmpY = (qpA + qpB - qpC - qpD) / (qpA + qpB + qpC + qpD);
+
+                                chartLOC.Series[0].Points.AddXY(tmpX, tmpY);
+
+                                sl.AddWorksheet(String.Format("Res{0}", imc));
+                                for (int w = 0; w < NUM_PIXELS_SIDE; w++)
+                                {
+                                    for (int k = 0; k < NUM_PIXELS_SIDE; k++)
+                                    {
+                                        try
+                                        {
+                                            double tmp1 = pixelHIT[w, k];
+                                            sl.SetCellValue(w + 1, k + 1, tmp1);
+                                        }
+                                        catch (Exception erorWrite) { System.Console.WriteLine(erorWrite.Message); }
+                                    }
+                                }
+
+                                Array.Clear(pixelHIT, 0, NUM_PIXELS_SIDE * NUM_PIXELS_SIDE);
+                            }
+                            sw.Stop();
+                            System.Console.WriteLine("Time: " + sw.Elapsed);
+                        }
                     }
                 }
                 sl.SaveAs((tbFileName.Text.Length > 0 ? tbFileName.Text : "test") + ".xlsx");
@@ -268,7 +360,8 @@ namespace MCspot
 
                 try
                 {
-                    encoder.Save(stream);
+                    InitializeGifParams(imc2-1);
+                    encoder.Save(stream);                   
                 }
                 catch(Exception e3)
                 {
@@ -553,20 +646,18 @@ namespace MCspot
 
                             try
                             {
-                                //pictureBox1.Image.Save("C:\\Users\\" + userName + "\\Desktop\\obrazy2\\im" + imc2 + ".png", ImageFormat.Png);
-
+                                //pictureBox1.Image.Save(imgPath + imc2 + ".png", ImageFormat.Png);
                                 using (MemoryStream memory = new MemoryStream())
                                 {
-                                    using (FileStream fs = new FileStream("C:\\Users\\" + userName + "\\Desktop\\obrazy2\\im" + imc2 + ".png", FileMode.Create, FileAccess.ReadWrite))
+                                    using (FileStream fs = new FileStream(imgPath + imc2 + ".png", FileMode.Create, FileAccess.ReadWrite))
                                     {
                                         pictureBox1.Image.Save(memory, ImageFormat.Png);
                                         byte[] bytes = memory.ToArray();
                                         fs.Write(bytes, 0, bytes.Length);
                                     }
-                                }
-
-                                BitmapSource bSource = new BitmapImage(new Uri("C:\\Users\\" + userName + "\\Desktop\\obrazy2\\im" + imc2 + ".png"));                                
-                                encoder.Frames.Add(BitmapFrame.Create(bSource));
+                                }                                
+                                BitmapSource bSource = new BitmapImage(new Uri(imgPath + imc2 + ".png"));                                
+                                encoder.Frames.Add(BitmapFrame.Create(bSource));                                
                                 imc2++;
                             }
                             catch(Exception eb2)
@@ -601,7 +692,6 @@ namespace MCspot
         {
             return (T)obj;
         }
-
         
         private Image CreateImage(double[,] hitMatrix)
         {
@@ -639,8 +729,21 @@ namespace MCspot
 
             bitmap.UnlockBits(bidmapdata);
             return bitmap;
-        }    
-     
+        }
+
+        private ImageCodecInfo GetEncoder(ImageFormat format)
+        {            
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
+            foreach (ImageCodecInfo codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                {                    
+                    return codec;
+                }
+            }
+            return null;
+        }
+
         /*
         public void DisplaySNR(double snr)
         {
@@ -656,15 +759,19 @@ namespace MCspot
 
         public void DisplayERROR(double error)
         {
-            ERRORqueue.Enqueue(error);
+            if (error > 0)
+                ERRORqueue.Enqueue(error);
+            else
+                ERRORqueue.Enqueue(1);
+
             lERROR.Invoke(new Action(delegate ()
             {
                 lERROR.Text = String.Format("Error: {0:0.00}", error);                
 
                 PHOTONSqueue.Enqueue(PHOTONS_PER_LED * SECONDARY_EMISSION_PHOTONS * STEPPERCENT * ERRORqueue.Count/1000);
-                chartError.Series[0].Points.DataBindXY(PHOTONSqueue, ERRORqueue);
+            //    chartError.Series[0].Points.DataBindXY(PHOTONSqueue, ERRORqueue);
 
-                chartError.ChartAreas[0].AxisX.IsLogarithmic = true;                
+            //    chartError.ChartAreas[0].AxisX.IsLogarithmic = true;                
             }));
         }
     }
