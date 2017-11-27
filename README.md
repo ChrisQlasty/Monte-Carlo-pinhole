@@ -1,6 +1,6 @@
 # Monte-Carlo-pinhole
 
-The multi thread simulator of predefined LEDs arrangement - ball - pinhole setup, written in C#. A large number of photons is emitted from each of light sources, some reflect from a ball, some of which can find way to go through a pinhole and meet an image plane. Simulator was utilized to estimate some dimensions for the design of physical sensor.
+The multi thread simulator of predefined LEDs arrangement - ball - pinhole setup, written in C#. A large number of photons is emitted from each of light sources, some reflect from a ball and part of them finds a way to go through the pinhole and meet an image plane. Simulator was utilized to estimate some dimensions for the physical implementation of the sensor.
 
 ## Readme overview
 
@@ -76,6 +76,7 @@ The pinhole diameter was varied in the range of R=0.5 mm to 3.5 mm with step of 
 #### ball motion tracking
 ### QP sensor
 The QP abbreviation stands for Quadrant Photodiode. It means that the simulated sensor consists of only four pixels. In this case the image from the picturebox is less meaningful and the scatter plot should be observed. Based on the proportions of illumination level between each of the pixels a position of the light reflecting object can be roughly estimated.
+
 #### ball motion tracking
    
 ### Dependencies
