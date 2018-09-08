@@ -1,6 +1,6 @@
 # Monte-Carlo-pinhole
 
-The multi thread simulator of predefined LEDs arrangement - ball - pinhole setup, written in C#. A large number of photons is emitted from each of light sources, some reflect from a ball and part of them finds a way to go through the pinhole and meet an image plane. Simulator was utilized to estimate some dimensions for the physical implementation of the sensor, which was built and described in the article ![Digits Recognition with Quadrant Photodiode and Convolutional Neural Network](https://ieeexplore.ieee.org/document/8431246/).
+The multi thread simulator of predefined LEDs arrangement - ball - pinhole setup, written in C#. A large number of photons is emitted from each of light sources, some reflect from a ball and part of them finds a way to go through the pinhole and meet an image plane. Simulator was utilized to estimate some dimensions for the physical implementation of the sensor, which was built and described in the article titled [Digits Recognition with Quadrant Photodiode and Convolutional Neural Network](https://ieeexplore.ieee.org/document/8431246/) [1].
 
 ## Readme overview
 
@@ -89,3 +89,6 @@ https://www.nuget.org/packages/SpreadsheetLight/
 ## Usage
 
 Use the Visual Studio.
+
+## References
+[1] [*"Digits Recognition with Quadrant Photodiode and Convolutional Neural Network"*, K. Janczyk, K. Czuszynski, J. Ruminski, 2018 11th International Conference on Human System Interaction (HSI), pp. 111-117](https://ieeexplore.ieee.org/document/8431246/).
