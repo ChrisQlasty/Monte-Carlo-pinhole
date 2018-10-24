@@ -46,6 +46,11 @@ The lower row presents how the high resolution sensor (mounted on the image plan
 
 ## Simulator app
 ### GUI
+The user interface contains four sections for simulation settings (blue roman numerals) and three charts (red numerals).  
+
+| Settings<ul><li>I - Physical dimensions of simulation environment</li><li>II - LEDs configurations</li><li>III - Ball position can be used to include several positions in one simulation run</li><li>IV - Simulation properties related with number of photons or chart update frequency</li></ul>Charts<ul><li>I - image of ball on the sensor - it's resolution depends on the defined number of pixels</li><li>II - error chart indicates difference between subsequent (after specified number of emitted photons) normalized images</li><li>III - position of the ball based on the sensor's sectors illumination proportions [1] </li> | <img src="./src/GUI.png"><br>| 
+|:---|---|
+
 ### Output files
 In the default setting the application saves:
 * each of the images from the picturebox generated during the simulation - in the .png format
