@@ -16,6 +16,7 @@ The multi thread simulator of predefined LEDs arrangement - ball - pinhole setup
     * ball motion tracking
   * QP sensor
     * ball motion tracking
+  * Demo Video
 * Dependencies
 * Usage
 
@@ -71,18 +72,38 @@ The computation steps for each photon (cone calculations not mentioned here) are
 *  final energy of a photon is added to a proper pixel of the sensor.
 ## Some results
 ### HighRes sensor
-In this section there are presented simulation results obtained from sensor with large amount of pixels (e.g. 100x100 px).
+In this section there are presented simulation results obtained from the sensor with large amount of pixels (100x100 px). <br><br>
+Especially for high resolution sensors the number of photons taking part in the simulation can be considered as sufficient, when subsequent images from the application (after another portion of photons) differ les than assumed threshold. The chart II from the GUI indicates the calculated normalized difference, e.g.:  
+<img src="./src/error.png"><br>
+To obtain this kind of plot presenting meaningful information, no motion of the ball should be considered (section III of the GUI settings). Additionally the refresh step (section IV) should be less than 100 (e.g. 1%).
+
 #### Blur effect
-The pinhole diameter was varied in the range of R=0.5 mm to 3.5 mm with step of 0.1 mm.
+In these examples position of the ball was fiexed but the pinhole diameter was varied in the range of R=1 mm to 3.5 mm with the step of 0.05 mm.
 
-![blur image](./src/blur2.gif)
+| Example 1 | Example 2 |
+|----------------|----------------|
+| <p align="center"><img src="./src/blur1.gif"></p> | <p align="center"><img src="./src/blur2.gif"></p>  |
 
+#### Ball motion tracking
 
-#### ball motion tracking
+| a) _x_ axis| b) _z_ axis  |
+|----------------|----------------|
+| <p align="center"><img src="./src/x_axis.gif"></p> | <p align="center"><img src="./src/z_axis.gif"></p>  |
+
+a) In section III of the settings within the GUI _x_ was set to change from -2cm to 2cm with the step of 0.05cm.  
+b) In section III of the settings within the GUI _z_ was set to change from 1.8cm to 3.4cm with the step of 0.025cm. <br><BR>
+ 
+To obtain this kind of animaiton Refresh step within the GUI should be set to 100% and ball motion has to be considered.
+
 ### QP sensor
 The QP abbreviation stands for Quadrant Photodiode. It means that the simulated sensor consists of only four pixels. In this case the image from the picturebox is less meaningful and the scatter plot should be observed. Based on the proportions of illumination level between each of the pixels a position of the light reflecting object can be roughly estimated.
 
-#### ball motion tracking
+#### Ball motion tracking
+For low resolution sensor lower number of photons can be considered. One can set Refresh step to 100%, allow ball to move in order to observe the estimated position on the scatter plot. This kind of simulation allows e.g. to unravel the pincushion effect: <br>
+<img src="./src/grid.png">
+   
+### Demo video
+Demonstration video with preview of the selected simulations is available [here](https://www.youtube.com/watch?v=nPRnfIXHmEo&t=2s&list=PL7O2QC3VBSZ2cHDJ8h-QumI3nmG9e7iEM&index=7).
    
 ### Dependencies
 
