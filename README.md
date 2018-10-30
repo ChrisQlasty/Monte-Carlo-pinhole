@@ -24,7 +24,7 @@ The multi thread simulator of predefined LEDs arrangement - ball - pinhole setup
 
 The image below presents the simulation environment. Notice that the sensor and pinhole planes extend infinitely in the simulator but in the image they are smaller for the improved clarity.
 
-<p align="center"><img scr="./src/Readme.png"></p>
+<p align="center"><img src="./src/Readme.png"></p>
 
 ### LEDs configurations
 The simulator allows to choose between two configurations of LEDs highlight system:
